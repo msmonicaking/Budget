@@ -44,7 +44,7 @@ public class Login extends State {
 				 * info before switching to mainScreen.
 				 */
 				sm.initMain();
-				sm.switchPanel(sm.mainScreen);
+				switchPanel(sm.mainScreen);
 			}
 			
 		});
