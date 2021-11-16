@@ -14,7 +14,10 @@ public class State extends JPanel {
 	public State() {
 		
 	}
-
+	
+	/*
+	 * Switches screen to "panel".
+	 */
 	protected void switchPanel(JPanel panel) {
 		sm.pane.removeAll();
 		sm.pane.add(panel);

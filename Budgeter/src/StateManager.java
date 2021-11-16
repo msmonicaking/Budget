@@ -17,7 +17,6 @@ public class StateManager extends JFrame {
 	protected JPanel mainScreen;
 	protected JPanel loginScreen;
 
-
 	public StateManager() throws HeadlessException {
 		super("BudGET");
 		State.sm = this;
@@ -41,15 +40,4 @@ public class StateManager extends JFrame {
 	public static void main(String[] args) {
 		StateManager sm = new StateManager();
 	}
-
-	/*
-	 * Switches screen to "panel".
-	 */
-	public void switchPanel(JPanel panel) {
-		pane.removeAll();
-		pane.add(panel);
-		pane.repaint();
-		pane.revalidate();
-	}
-
 }
