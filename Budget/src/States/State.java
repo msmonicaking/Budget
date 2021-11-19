@@ -1,7 +1,7 @@
 package States;
 import java.awt.Component;
-import java.awt.LayoutManager;
-import java.util.LinkedList;
+//import java.awt.LayoutManager;
+//import java.util.LinkedList;
 
 import javax.swing.JPanel;
 

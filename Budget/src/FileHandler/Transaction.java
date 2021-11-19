@@ -1,3 +1,4 @@
+
 package FileHandler;
 
 public class Transaction {
@@ -22,6 +23,7 @@ public class Transaction {
     // setter for Category
     // does not currently test for validity of category
     public void setCategory(String category) {
+        
         this.category = category;
     }
 

@@ -1,4 +1,5 @@
 package States;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -8,9 +9,13 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JPasswordField;
+import java.awt.Color;
 
 public class Login extends State {
 	
+
+	Color backgroundColor = new Color(54, 73, 88);
 	/**
 	 * 
 	 */
@@ -30,6 +35,7 @@ public class Login extends State {
 		setSize(1280, 720);
 		setVisible(true);
 		setLayout(null);
+		setBackground(backgroundColor);
 	}
 	
 	/*
@@ -50,6 +56,7 @@ public class Login extends State {
 			}
 			
 		});
+
 		login.setBounds(0, (int) (2 * getSize().height / 3.2), 100, 30);
 		centerWidth(login);
 		add(login);
@@ -68,7 +75,12 @@ public class Login extends State {
 		add(register);
 	}
 	
+	/*
+	 * Creates username and password text fields
+	 */
 	private void initTextBoxes() {
+
+
 		JTextField username = createTextBox("Username");
 
 		username.setBounds(0, 2 * getSize().height / 4, 150, 30);
@@ -80,6 +92,7 @@ public class Login extends State {
 		password.setBounds(0, 5 * getSize().height / 9, 150, 30);
 		centerWidth(password);
 		add(password);
+
 	}
 	
 	/**
@@ -87,22 +100,29 @@ public class Login extends State {
 	 * @return : JTextField.
 	 */
 	private JTextField createTextBox(String name) {
+
 		JTextField temp = new JTextField(name);
+		
+		// a Focus Listener changes behavior when user clicks on text box
 		temp.addFocusListener(new FocusListener() {
 
+			// defines behavior when clicked in
 			@Override
 			public void focusGained(FocusEvent e) {
+
 				if (temp.getText().equals(name)) {
 					temp.setText("");
 				}
 			}
 
+			// defines behavior when clicked away
 			@Override
 			public void focusLost(FocusEvent e) {
 				temp.setText(name);
 			}
 			
 		});
+
 		return temp;
 	}
 

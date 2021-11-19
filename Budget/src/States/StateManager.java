@@ -1,12 +1,12 @@
 package States;
-import java.awt.Frame;
+
 import java.awt.HeadlessException;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
+//import java.awt.event.ComponentAdapter;
+//import java.awt.event.ComponentEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JLayeredPane;
-import javax.swing.JPanel;
+import java.awt.Color;
 
 public class StateManager extends JFrame {
 
@@ -33,12 +33,13 @@ public class StateManager extends JFrame {
 	}
 	
 	private void settings() {
+
 		setSize(1280, 720);
 		setVisible(true);
 	}
 	
 	
-
+// Main runnable program, creates a State Manager
 	public static void main(String[] args) {
 		StateManager sm = new StateManager();
 	}

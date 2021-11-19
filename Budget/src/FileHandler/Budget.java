@@ -9,22 +9,21 @@ public class Budget {
     public Budget() {
 
         this.categories = new LinkedList<Pair>();
-
     }
 
     public void addCategory(String name, int dollars) {
 
         categories.add(new Pair(name, dollars));
-
     }
 
+    // returns a LinkedList of all the category data 
     public LinkedList<Pair> getCategories() {
         return categories;
     }
 
     
     // each Pair represents one category
-    private class Pair {
+    public class Pair {
 
         String category;
         int dollars;
