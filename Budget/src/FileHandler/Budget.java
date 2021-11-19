@@ -1,0 +1,40 @@
+package FileHandler;
+
+import java.util.LinkedList;
+
+public class Budget {
+
+    private LinkedList<Pair> categories;
+
+    public Budget() {
+
+        this.categories = new LinkedList<Pair>();
+
+    }
+
+    public void addCategory(String name, int dollars) {
+
+        categories.add(new Pair(name, dollars));
+
+    }
+
+    public LinkedList<Pair> getCategories() {
+        return categories;
+    }
+
+    
+    // each Pair represents one category
+    private class Pair {
+
+        String category;
+        int dollars;
+
+        Pair(String name, int dollars) {
+
+            this.category = name;
+            this.dollars = dollars;
+        }
+
+    }
+
+}
