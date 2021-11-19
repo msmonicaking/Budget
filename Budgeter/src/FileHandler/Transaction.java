@@ -1,8 +1,4 @@
-// 
-// Transaction.java
-// Monica King
-// November 14, 2021
-//
+package FileHandler;
 
 public class Transaction {
     

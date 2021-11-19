@@ -37,10 +37,9 @@ public class FileIO {
 	
 	/* load Transaction history from json file.
 	 */
-
-	/*
-	public Year<TStruct> load(String username) {
-		
+	
+	public Year load(String username) {
+		return new Year(1999);
 	}
 	*/
 
