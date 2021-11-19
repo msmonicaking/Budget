@@ -9,8 +9,9 @@ import java.util.regex.Pattern;
 private static final long serialVersionUID = 3109968069917069255L;
 
 	public Register() {
+		//these are the regex checks for the username and password to check against (currently allows all lowcase and uppcase letters, numbers, and must be length of 5 - 19 characters)
 		static String userNameCode = "[a-zA-Z1-9]{5,19}";
-		static String passwordCode = "[a-zA-Z1-9]{6,19}";
+		static String passwordCode = "[a-zA-Z1-9]{5,19}";
 		//this method is the register check that checks if the username and password are using the allowed characters
 		public static boolean Register(String userName, String password){
 			//creating the pattern compilers for the regex string checks
