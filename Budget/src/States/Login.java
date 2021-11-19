@@ -15,7 +15,7 @@ import java.awt.Color;
 public class Login extends State {
 	
 
-	Color backgroundColor = new Color(54, 73, 88);
+	
 	/**
 	 * 
 	 */
@@ -32,10 +32,11 @@ public class Login extends State {
 	 * Sets Login state settings.
 	 */
 	private void init() {
-		setSize(1280, 720);
-		setVisible(true);
+
+		universalSettings();
+		
 		setLayout(null);
-		setBackground(backgroundColor);
+
 	}
 	
 	/*

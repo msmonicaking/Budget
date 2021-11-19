@@ -2,16 +2,20 @@ package States;
 import java.awt.Component;
 //import java.awt.LayoutManager;
 //import java.util.LinkedList;
+import java.awt.Color;
 
 import javax.swing.JPanel;
 
 public class State extends JPanel {
+
+	Color backgroundColor = new Color(54, 73, 88);
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -1367216474109123645L;
 	protected static StateManager sm;
+
 	public State() {
 		
 	}
@@ -32,4 +36,12 @@ public class State extends JPanel {
 		com.setBounds(x, com.getY(), com.getWidth(), com.getHeight());
 	}
 	
+	public void universalSettings() {
+
+		setSize(1280, 720);
+		setVisible(true);
+		setBackground(backgroundColor);
+
+	}
+
 }
