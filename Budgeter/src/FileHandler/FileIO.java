@@ -1,4 +1,4 @@
-package Budgeter.src.FileHandler;
+package FileHandler;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -41,7 +41,7 @@ public class FileIO {
 	public Year load(String username) {
 		return new Year(1999);
 	}
-	*/
+	
 
 	/* Add new Transaction category
 	 */

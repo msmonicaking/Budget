@@ -1,3 +1,4 @@
+package States;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -14,7 +15,8 @@ public class Login extends State {
 	 * 
 	 */
 	private static final long serialVersionUID = -4847569599721799776L;
-
+	private JPanel register;
+	
 	public Login() {
 		init();
 		initButtons();
@@ -57,7 +59,7 @@ public class Login extends State {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// Switch to register page.
+				
 			}
 			
 		});
