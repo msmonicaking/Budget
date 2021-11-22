@@ -20,9 +20,10 @@ public class Login extends State {
 	 * 
 	 */
 	private static final long serialVersionUID = -4847569599721799776L;
-	private JPanel register;
+	private LoginPage page;
 	
-	public Login() {
+	public Login(LoginPage page) {
+		this.page = page;
 		init();
 		initButtons();
 		initTextBoxes();
@@ -34,7 +35,6 @@ public class Login extends State {
 	private void init() {
 
 		universalSettings();
-		
 		setLayout(null);
 
 	}

@@ -8,8 +8,11 @@ import java.util.regex.Pattern;
  *  A state for registering a new username and password
  */
 public class Register extends State {
+	private LoginPage page;
 
-	
+	public Register(LoginPage page) {
+		this.page = page;
+	}
 	private static final long serialVersionUID = 3109968069917069255L;
 
 	// these are the regex checks for the username and password to check against

@@ -15,16 +15,16 @@ public class StateManager extends JFrame {
 	private static final long serialVersionUID = 977693761657240777L;
 	protected JLayeredPane pane;
 	protected State mainScreen;
-	protected State loginScreen;
+	protected State loginPage;
 
 	public StateManager() throws HeadlessException {
 		super("BudGET");
 		State.sm = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pane = getLayeredPane();
-		loginScreen = new Login();
+		loginPage = new LoginPage();
 		settings();
-		add(loginScreen);
+		add(loginPage);
 	}
 
 	protected void initMain() {
