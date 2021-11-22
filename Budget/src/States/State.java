@@ -1,6 +1,9 @@
 package States;
+
 import java.awt.Component;
+import java.awt.Font;
 //import java.awt.LayoutManager;
+
 //import java.util.LinkedList;
 import java.awt.Color;
 
@@ -15,6 +18,11 @@ public class State extends JPanel {
 	Color steelTeal = new Color(85, 130, 139); 
 	Color deepSpace = new Color(59, 96, 100);
 	Color charcoal = new Color(54, 73, 88); // background color currently
+
+	Font headerFont = new Font("Arial", Font.ITALIC, 100);
+
+	String[] monthNames = {"January", "Febuary", "March", "April", "May", "June", 
+							"July", "August", "September", "October", "November", "December"};
 
 	/**
 	 * 
@@ -38,6 +46,7 @@ public class State extends JPanel {
 
 	
 	protected void centerWidth(Component com) {
+
 		int x = (getSize().width / 2) - (com.getSize().width / 2);
 		com.setBounds(x, com.getY(), com.getWidth(), com.getHeight());
 	}

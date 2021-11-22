@@ -162,6 +162,7 @@ public class FileIO {
 	/* Add new Transaction to a category.
 	 */
 	public void addTransaction(Transaction transaction, String username) throws Exception {
+
 		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
 		JSONObject user = (JSONObject) obj;
 
@@ -169,7 +170,7 @@ public class FileIO {
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
 		JSONObject category = (JSONObject) transactionsObj.get(transaction.category);
 
-		if(category != null){
+		if(category != null) {
 			if(!category.containsKey(transaction.getName())) {
 				JSONArray itemArr = new JSONArray();
 				JSONObject item = new JSONObject();
@@ -177,7 +178,8 @@ public class FileIO {
 				item.put("DOP", transaction.getDate().day);
 				itemArr.add(item);
 				category.put(transaction.getName(), itemArr);
-			}else{
+			} 
+			else {
 				JSONArray itemArr = (JSONArray) category.get(transaction.getName());
 				JSONObject item = new JSONObject();
 				item.put("Price", transaction.getPrice());
@@ -185,7 +187,8 @@ public class FileIO {
 				itemArr.add(item);
 			}
 			month.put("Total Expenses", (double) month.get("Total Expenses") + transaction.getPrice());
-		}else{
+		}
+		else {
 			System.out.println("Category not found"); // Prints an error
 		}
 
@@ -200,9 +203,11 @@ public class FileIO {
 	/* Delete transaction
 	 */
 	public void delTransaction(Transaction transaction, String username) throws Exception {
+
 		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
 		JSONObject user = (JSONObject) obj;
 
+		// finds month & year needed
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + transaction.getDate().year)).get("" + transaction.getDate().month));
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
 		JSONObject category = (JSONObject) transactionsObj.get(transaction.category);
@@ -227,5 +232,24 @@ public class FileIO {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	/*
+	* Returns a 2D array of Transaction information for the given year and month
+	*/
+	public String[][] getAllTransactions(String username, int yearInt, int monthInt) throws Exception {
+
+		// gets info associated with username
+		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
+		JSONObject user = (JSONObject) obj;
+
+		JSONObject month = ((JSONObject)((JSONObject) user.get("" + yearInt)).get("" + monthInt));
+		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
+
+		
+		
+		String[][] transactions = new String[10][10];
+
+		return transactions;
 	}
 }
