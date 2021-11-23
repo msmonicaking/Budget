@@ -1,29 +1,126 @@
 package States;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.JButton;
+import javax.swing.JTextField;
+
+
+import FileHandler.FileIO;
+
 /**
- *  Class Register
- *  A state for registering a new username and password
+ * Class Register A state for registering a new username and password
  */
 public class Register extends State {
-	private LoginPage page;
-
-	public Register(LoginPage page) {
-		this.page = page;
-	}
-	private static final long serialVersionUID = 3109968069917069255L;
-
 	// these are the regex checks for the username and password to check against
 	// (currently allows all lowcase and uppcase letters, numbers, and must be
 	// length of 5 - 19 characters)
 	static String userNameCode = "[a-zA-Z1-9]{5,19}";
 	static String passwordCode = "[a-zA-Z1-9]{5,19}";
+	
+	private LoginPage page;
+	private JTextField username;
+	private JTextField password;
+	// Security question
+	private JTextField security_q;
+	// Security answer
+	private JTextField security_a;
+
+	public Register(LoginPage page) {
+		this.page = page;
+		init();
+		initTextBoxes();
+		initButtons();
+	}
+
+	private static final long serialVersionUID = 3109968069917069255L;
+
+	public void init() {
+		universalSettings();
+		setLayout(null);
+	}
+
+	/*
+	 * Creates Login and Register buttons.
+	 */
+	private void initButtons() {
+		JButton back = new JButton("Back");
+		back.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				page.switchTo(LoginPage.Screens.LOGIN);
+			}
+			
+		});
+
+		back.setBounds((getSize().width / 2) - (100 / 2) - 50, 12 * (getSize().height / 19), 100, 30);
+//		centerWidth(back);
+		add(back);
+		
+		JButton register = new JButton("Register");
+		
+		register.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (register(username.getText(), password.getText())) {
+					/* Write to LoginCredentials using FileIO
+					 */
+					FileIO fileio = new FileIO();
+					
+					try {
+						fileio.newUserLogin(username.getText(), password.getText(), security_q.getText(), security_a.getText());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					} 
+					page.switchTo(LoginPage.Screens.LOGIN);
+				} else {
+					// Show errors.
+					System.err.println("Does not meet requirements");
+				}
+			}
+			
+		});
+		register.setBounds((getSize().width / 2) - (100 / 2) + 50, 12 * (getSize().height / 19), 100, 30);
+//		centerWidth(register);
+		add(register);
+	}
+
+	/*
+	 * Creates username and password text fields
+	 */
+	private void initTextBoxes() {
+		username = createTextBox("Username");
+		username.setBounds(0, 8 * (getSize().height / 19), 200, 30);
+		centerWidth(username);
+		add(username);
+
+		password = createTextBox("Password");
+		password.setBounds(0, 9 * (getSize().height / 19), 200, 30);
+		centerWidth(password);
+		add(password);
+
+		security_q = createTextBox("Security Question");
+		security_q.setBounds(0, 10 * (getSize().height / 19), 200, 30);
+		centerWidth(security_q);
+		add(security_q);
+
+		security_a = createTextBox("Security Answer");
+		security_a.setBounds(0, 11 * (getSize().height / 19), 200, 30);
+		centerWidth(security_a);
+		add(security_a);
+
+	}
 
 	// this method is the register check that checks if the username and password
 	// are using the allowed characters
-	public static boolean Register(String userName, String password) {
+	public static boolean register(String userName, String password) {
 
 		// creating the pattern compilers for the regex string checks
 		Pattern userNamePattern = Pattern.compile(userNameCode);
@@ -33,6 +130,11 @@ public class Register extends State {
 		Matcher userNameMatch = userNamePattern.matcher(userName);
 		Matcher passwordMatch = passwordPattern.matcher(password);
 
+		// Check if something is typed in.
+		if (userName.equals("Username") || userName.equals("Password")) {
+			return false;
+		}
+		
 		// this checks if the username fits within the regex boundaries
 		if (userNameMatch.find()) {
 			System.out.println("Workedusername");
