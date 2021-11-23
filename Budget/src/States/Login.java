@@ -4,16 +4,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import FileHandler.FileIO;
+
 import javax.swing.JPasswordField;
 import java.awt.Color;
 
 public class Login extends State {
-	
+	private JTextField username;
+	private JTextField password;
 
 	
 	/**
@@ -52,8 +57,17 @@ public class Login extends State {
 				 * Needs to check that input meets requirements and matches login
 				 * info before switching to mainScreen.
 				 */
-				sm.initMain();
-				switchPanel(sm.mainScreen);
+				FileIO fileio = new FileIO();
+				try {
+					if (fileio.checkLoginCredentials(username.getText(), password.getText())) {
+						sm.initMain();
+						switchPanel(sm.mainScreen);
+					} else {
+						// display wrong
+					}
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
 			}
 			
 		});
@@ -80,13 +94,13 @@ public class Login extends State {
 	 * Creates username and password text fields
 	 */
 	private void initTextBoxes() {
-		JTextField username = createTextBox("Username");
+		username = createTextBox("Username");
 
 		username.setBounds(0, 2 * getSize().height / 4, 200, 30);
 		centerWidth(username);
 		add(username);
 		
-		JTextField password = createTextBox("Password");
+		password = createTextBox("Password");
 		
 		password.setBounds(0, 5 * getSize().height / 9, 200, 30);
 		centerWidth(password);
