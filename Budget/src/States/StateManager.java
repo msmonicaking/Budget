@@ -22,9 +22,8 @@ public class StateManager extends JFrame {
 		State.sm = this;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		pane = getLayeredPane();
-		loginPage = new LoginPage();
 		settings();
-		add(loginPage);
+		loginPage = new LoginPage();
 	}
 
 	protected void initMain() {
@@ -32,7 +31,7 @@ public class StateManager extends JFrame {
 	}
 	
 	private void settings() {
-
+		setResizable(false);
 		setSize(1280, 720);
 		setVisible(true);
 	}
