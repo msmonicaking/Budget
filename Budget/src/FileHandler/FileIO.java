@@ -89,10 +89,14 @@ public class FileIO {
 		FileReader obj = new FileReader("LoginCredentials.json");
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject loginCredentials = new JSONObject(tokener);
-
-		JSONObject user = (JSONObject) loginCredentials.get(username);
-
-		return user.get("Password") == password;
+		if (username.equals("") || password.equals("")) {
+			return false;
+		}
+		if (loginCredentials.has(username)) {
+			JSONObject user = (JSONObject) loginCredentials.get(username);
+			return user.get("Password").equals(password);
+		}
+		return false;
 	}
 
 	/* Checks whether username already exists
