@@ -1,5 +1,6 @@
 package FileHandler;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -28,6 +29,36 @@ public class FileIO {
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
 			file.write(user.toJSONString());
+			file.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// Creates a new JSON file for login credentials
+	public void newFileLoginCredentials(){
+		JSONObject login = new JSONObject();
+
+		try (FileWriter file = new FileWriter("LoginCredentials.json")) {
+			file.write(login.toJSONString());
+			file.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void newUserLogin(String username, String password, String securityQ, String securityA) throws IOException, ParseException {
+		Object obj = new JSONParser().parse(new FileReader("LoginCredentials.json"));
+		JSONObject login = (JSONObject) obj;
+		JSONObject details = new JSONObject();
+
+		login.put(username, details);
+		details.put("Password", password);
+		details.put("Security_q", securityQ);
+		details.put("Security_a", securityA);
+
+		try (FileWriter file = new FileWriter(username + ".json")) {
+			file.write(login.toJSONString());
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
