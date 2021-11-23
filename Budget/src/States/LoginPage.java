@@ -10,8 +10,8 @@ public class LoginPage extends State {
 		LOGIN,
 		REGISTER
 	}
-	private Login loginScreen;
-	private Register registerScreen;
+	private static Login loginScreen;
+	private static Register registerScreen;
 	
 	public LoginPage() {
 		loginScreen = new Login(this);
@@ -24,8 +24,10 @@ public class LoginPage extends State {
 		switch (screen) {
 		case LOGIN:
 			switchPanel(loginScreen);
+			break;
 		case REGISTER:
 			switchPanel(registerScreen);
+			break;
 		}
 	}
 

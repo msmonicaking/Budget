@@ -62,12 +62,12 @@ public class Login extends State {
 		centerWidth(login);
 		add(login);
 		
-		JButton register = new JButton("Register");
+		JButton register = new JButton("Sign up");
 		register.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+				page.switchTo(LoginPage.Screens.REGISTER);
 			}
 			
 		});
@@ -80,51 +80,20 @@ public class Login extends State {
 	 * Creates username and password text fields
 	 */
 	private void initTextBoxes() {
-
-
 		JTextField username = createTextBox("Username");
 
-		username.setBounds(0, 2 * getSize().height / 4, 150, 30);
+		username.setBounds(0, 2 * getSize().height / 4, 200, 30);
 		centerWidth(username);
 		add(username);
 		
 		JTextField password = createTextBox("Password");
 		
-		password.setBounds(0, 5 * getSize().height / 9, 150, 30);
+		password.setBounds(0, 5 * getSize().height / 9, 200, 30);
 		centerWidth(password);
 		add(password);
 
 	}
 	
-	/**
-	 * @param name: Placeholder inside text box.
-	 * @return : JTextField.
-	 */
-	private JTextField createTextBox(String name) {
-
-		JTextField temp = new JTextField(name);
-		
-		// a Focus Listener changes behavior when user clicks on text box
-		temp.addFocusListener(new FocusListener() {
-
-			// defines behavior when clicked in
-			@Override
-			public void focusGained(FocusEvent e) {
-
-				if (temp.getText().equals(name)) {
-					temp.setText("");
-				}
-			}
-
-			// defines behavior when clicked away
-			@Override
-			public void focusLost(FocusEvent e) {
-				temp.setText(name);
-			}
-			
-		});
-
-		return temp;
-	}
+	
 
 }
