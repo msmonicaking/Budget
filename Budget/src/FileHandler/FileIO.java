@@ -1,16 +1,16 @@
 package FileHandler;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-
-@SuppressWarnings("unchecked")
+import org.json.JSONArray;
+import org.json.JSONObject;
+import org.json.JSONString;
+import org.json.JSONTokener;
 
 /*
  * Editing and loading transaction from JSON file.
@@ -18,7 +18,15 @@ import org.json.simple.parser.ParseException;
 public class FileIO {
 
 	public FileIO() {
-
+		// Create LoginCredentials.json if it does not exist.
+		if (!checkFileExists()) {
+			newFileLoginCredentials();
+		}
+	}
+	
+	public boolean checkFileExists() {
+		File file = new File("LoginCredentials.json");
+		return file.exists();
 	}
 
 	/* Create a new JSON file for a user.
@@ -28,7 +36,7 @@ public class FileIO {
 		JSONObject user = new JSONObject();
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -40,16 +48,17 @@ public class FileIO {
 		JSONObject login = new JSONObject();
 
 		try (FileWriter file = new FileWriter("LoginCredentials.json")) {
-			file.write(login.toJSONString());
+			file.write(login.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void newUserLogin(String username, String password, String securityQ, String securityA) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader("LoginCredentials.json"));
-		JSONObject login = (JSONObject) obj;
+	public void newUserLogin(String username, String password, String securityQ, String securityA) throws IOException {
+		FileReader obj = new FileReader("LoginCredentials.json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject login = new JSONObject(tokener);
 		JSONObject details = new JSONObject();
 
 		login.put(username, details);
@@ -57,20 +66,29 @@ public class FileIO {
 		details.put("Security_q", securityQ);
 		details.put("Security_a", securityA);
 
-		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(login.toJSONString());
+		try {
+			// Create a new user json file.
+			File userFile = new File(username + ".json");
+			userFile.createNewFile();
+			
+			FileWriter file = new FileWriter("LoginCredentials.json");
+			file.write(login.toString(4));
 			file.flush();
+			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			obj.close();
 		}
 	}
 
 	/* Takes in a username and password
 	   Checks whether username and password is correct
 	 */
-	public boolean checkLoginCredentials(String username, String password) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader("LoginCredentials.json"));
-		JSONObject loginCredentials = (JSONObject) obj;
+	public boolean checkLoginCredentials(String username, String password) throws IOException {
+		FileReader obj = new FileReader("LoginCredentials.json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject loginCredentials = new JSONObject(tokener);
 
 		JSONObject user = (JSONObject) loginCredentials.get(username);
 
@@ -79,38 +97,42 @@ public class FileIO {
 
 	/* Checks whether username already exists
 	 */
-	public boolean checkUsername(String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader("LoginCredentials.json"));
-		JSONObject loginCredentials = (JSONObject) obj;
+	public boolean checkUsername(String username) throws IOException {
+		FileReader obj = new FileReader("LoginCredentials.json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject loginCredentials = new JSONObject(tokener);
 
-		return loginCredentials.containsKey(username);
+		return loginCredentials.has(username);
 	}
 
-	public void addYear(Date date, String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+	public void addYear(Date date, String username) throws IOException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 		JSONObject year = new JSONObject();
 
-		user.put(date.year, year);
+		user.put(date.year + "", year);
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean checkYear(Date date, String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+	private boolean checkYear(Date date, String username) throws IOException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 
-		return user.containsKey("" + date.year);
+		return user.has("" + date.year);
 	}
 
-	public void addMonth(Date date, String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+	public void addMonth(Date date, String username) throws IOException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 		JSONObject year = (JSONObject) user.get(("" + date.year));
 		JSONObject month = new JSONObject();
 		JSONObject transactions = new JSONObject();
@@ -118,21 +140,22 @@ public class FileIO {
 		month.put("Budget", 0);
 		month.put("Total Expenses", (double) 0);
 		month.put("Transactions", transactions);
-		year.put(date.month, month);
+		year.put(date.month + "", month);
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	private boolean checkMonth(Date date, String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+	private boolean checkMonth(Date date, String username) throws IOException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 
-		return ((JSONObject) user.get(""+ date.year)).containsKey("" + date.month);
+		return ((JSONObject) user.get(""+ date.year)).has("" + date.month);
 	}
 
 	/* load Transaction history from json file.
@@ -146,8 +169,9 @@ public class FileIO {
 	/* Add new Transaction category
 	 */
 	public void addCategory(String category, Date date, String username) throws Exception {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 
 		JSONObject categoryObject = new JSONObject();
 		JSONObject transactions = ((JSONObject)((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month)).get("Transactions"));
@@ -156,7 +180,7 @@ public class FileIO {
 		}
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -165,9 +189,10 @@ public class FileIO {
 
 	/* Get budget
 	 */
-	public String getBudget(Date date, String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+	public String getBudget(Date date, String username) throws IOException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month));
 
 		return (String) month.get("Budget");
@@ -175,15 +200,16 @@ public class FileIO {
 
 	/* Set budget
 	 */
-	public void setBudget(String budget, Date date, String username) throws IOException, ParseException {
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+	public void setBudget(String budget, Date date, String username) throws IOException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month));
 
 		month.put("Budget", budget);
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -194,20 +220,21 @@ public class FileIO {
 	 */
 	public void addTransaction(Transaction transaction, String username) throws Exception {
 
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + transaction.getDate().year)).get("" + transaction.getDate().month));
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
 		JSONObject category = (JSONObject) transactionsObj.get(transaction.category);
 
 		if(category != null) {
-			if(!category.containsKey(transaction.getName())) {
+			if(!category.has(transaction.getName())) {
 				JSONArray itemArr = new JSONArray();
 				JSONObject item = new JSONObject();
 				item.put("Price", transaction.getPrice());
 				item.put("DOP", transaction.getDate().day);
-				itemArr.add(item);
+				itemArr.put(item);
 				category.put(transaction.getName(), itemArr);
 			} 
 			else {
@@ -215,7 +242,7 @@ public class FileIO {
 				JSONObject item = new JSONObject();
 				item.put("Price", transaction.getPrice());
 				item.put("DOP", transaction.getDate().day);
-				itemArr.add(item);
+				itemArr.put(item);
 			}
 			month.put("Total Expenses", (double) month.get("Total Expenses") + transaction.getPrice());
 		}
@@ -224,7 +251,7 @@ public class FileIO {
 		}
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -235,8 +262,9 @@ public class FileIO {
 	 */
 	public void delTransaction(Transaction transaction, String username) throws Exception {
 
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 
 		// finds month & year needed
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + transaction.getDate().year)).get("" + transaction.getDate().month));
@@ -245,7 +273,7 @@ public class FileIO {
 		JSONArray itemArr = (JSONArray)category.get(transaction.getName());
 
 		if(itemArr != null){
-			for(int i = 0; i < itemArr.size(); i++){
+			for(int i = 0; i < itemArr.length(); i++){
 				if(((JSONObject)itemArr.get(i)).get("Price").equals(transaction.getPrice())){
 					if((long) ((JSONObject)itemArr.get(i)).get("DOP") == (long)transaction.getDate().day){
 						itemArr.remove(i);
@@ -258,7 +286,7 @@ public class FileIO {
 		}
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
-			file.write(user.toJSONString());
+			file.write(user.toString(4));
 			file.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -271,8 +299,9 @@ public class FileIO {
 	public String[][] getAllTransactions(String username, int yearInt, int monthInt) throws Exception {
 
 		// gets info associated with username
-		Object obj = new JSONParser().parse(new FileReader(username + ".json"));
-		JSONObject user = (JSONObject) obj;
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
 
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + yearInt)).get("" + monthInt));
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
