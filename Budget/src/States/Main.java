@@ -22,10 +22,10 @@ public class Main extends State {
 	public Main() {
 
 		init();
-		//setLayout(new GridLayout());
+		//setLayout(new GridLayout(1, 1));
 		setLayout(null);
 
-		monthYearSetters();
+		makeMonthTabs();
 
 	}
 	
@@ -38,19 +38,21 @@ public class Main extends State {
 
 	}
 
-	private void monthYearSetters() {
+	private void makeMonthTabs() {
 
 		JTabbedPane monthTabs = new JTabbedPane();
-
+		
+		int monthAt = 0;
 		for(String aMonth : monthNames) {
-			monthTabs.addTab(aMonth, new DataPane());
+			monthTabs.addTab(aMonth, new DataPane(monthAt));
+			monthAt++;
 		}
 
-		//centerWidth(this);
+		centerWidth(this);
 		monthTabs.setBounds(0, 0, 1265, 680);
 
 		monthTabs.setBackground(deepSpace);
-		//monthTabs.setForeground(steelTeal);
+		monthTabs.setForeground(steelTeal);
 		
 		monthTabs.setTabPlacement(JTabbedPane.BOTTOM);
 
@@ -60,16 +62,29 @@ public class Main extends State {
 	// The inner State, one of these per month
 	class DataPane extends State {
 
+		int monthInt;
 
-		public DataPane() {
+		public DataPane(int monthInt) {
+
+			this.monthInt = monthInt;
 
 			universalSettings();
 			setBackground(steelTeal);
 			centerWidth(this);
 
+			title();
+			displayAllTransactions();
+
 		}
 
+		private void title() {
 
+			JLabel header = new JLabel(monthNames[monthInt]);
+			header.setFont(headerFont);
+
+			add(header);
+
+		}
 
 		private void displayAllTransactions() {
 
@@ -79,7 +94,8 @@ public class Main extends State {
 	
 			// display in a JTable
 			JTable table = new JTable();
-			
+			table.setBounds(100,100, 100, 100);
+
 			add(table);
 	
 		}
