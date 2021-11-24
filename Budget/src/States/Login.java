@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -15,11 +16,12 @@ import FileHandler.FileIO;
 
 import javax.swing.JPasswordField;
 import java.awt.Color;
+import java.awt.Font;
 
 public class Login extends State {
 	private JTextField username;
 	private JTextField password;
-
+	private JLabel invalid;
 	
 	/**
 	 * 
@@ -38,10 +40,19 @@ public class Login extends State {
 	 * Sets Login state settings.
 	 */
 	private void init() {
-
 		universalSettings();
 		setLayout(null);
-
+	}
+	
+	public void initInvalid() {
+		invalid = new JLabel("Invalid Username or Password.");
+		Font font = new Font("Arial", 10, 14);
+		invalid.setForeground(Color.RED);
+		invalid.setFont(font);
+		invalid.setBounds(540, 9 * (getSize().height / 19), 500, 20);
+		add(invalid);
+		repaint();
+		revalidate();
 	}
 	
 	/*
@@ -64,6 +75,8 @@ public class Login extends State {
 						switchPanel(sm.mainScreen);
 					} else {
 						// display wrong
+						System.out.println("Invalid");
+						initInvalid();
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
