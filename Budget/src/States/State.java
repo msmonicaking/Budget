@@ -39,7 +39,7 @@ public class State extends JPanel {
 	 * Switches screen to "panel".
 	 */
 	protected void switchPanel(JPanel panel) {
-		System.out.println("switched");
+//		System.out.println("switched");
 		sm.pane.removeAll();
 		sm.pane.add(panel);
 		sm.pane.repaint();
