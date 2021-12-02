@@ -54,7 +54,7 @@ public class Register extends State {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				page.switchTo(LoginPage.Screens.LOGIN);
+				page.switchTo(Screens.LOGIN);
 			}
 			
 		});
@@ -79,7 +79,7 @@ public class Register extends State {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} 
-					page.switchTo(LoginPage.Screens.LOGIN);
+					page.switchTo(Screens.LOGIN);
 				} else {
 					// Show errors.
 					System.err.println("Does not meet requirements");
