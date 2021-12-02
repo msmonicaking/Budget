@@ -6,10 +6,6 @@ public class LoginPage extends State {
 	 */
 	private static final long serialVersionUID = -7228111606502371323L;
 
-	enum Screens {
-		LOGIN,
-		REGISTER
-	}
 	private static Login loginScreen;
 	private static Register registerScreen;
 	
@@ -27,6 +23,8 @@ public class LoginPage extends State {
 			break;
 		case REGISTER:
 			switchPanel(registerScreen);
+			break;
+		default:
 			break;
 		}
 	}
