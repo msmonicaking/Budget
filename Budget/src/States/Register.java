@@ -1,5 +1,7 @@
 package States;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -8,7 +10,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
+
 
 
 import FileHandler.FileIO;
@@ -30,6 +34,8 @@ public class Register extends State {
 	private JTextField security_q;
 	// Security answer
 	private JTextField security_a;
+	private JLabel invalid;
+	private boolean invalidShown = false;
 
 	public Register(LoginPage page) {
 		this.page = page;
@@ -75,11 +81,20 @@ public class Register extends State {
 					FileIO fileio = new FileIO();
 					
 					try {
-						fileio.newUserLogin(username.getText(), password.getText(), security_q.getText(), security_a.getText());
+						if(fileio.checkUsername(username.getText())) {
+							if(!invalidShown) {
+								// display wrong
+								System.out.println("Username already exists.");
+								initInvalid();
+								invalidShown = true;
+							}
+						}else {
+							fileio.newUserLogin(username.getText(), password.getText(), security_q.getText(), security_a.getText());
+							page.switchTo(Screens.LOGIN);
+						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					} 
-					page.switchTo(Screens.LOGIN);
 				} else {
 					// Show errors.
 					System.err.println("Does not meet requirements");
@@ -90,6 +105,17 @@ public class Register extends State {
 		register.setBounds((getSize().width / 2) - (100 / 2) + 50, 12 * (getSize().height / 19), 100, 30);
 //		centerWidth(register);
 		add(register);
+	}
+	
+	public void initInvalid() {
+		invalid = new JLabel("Username already exists.");
+		Font font = new Font("Arial", 10, 14);
+		invalid.setForeground(Color.RED);
+		invalid.setFont(font);
+		invalid.setBounds(560, 9 * (getSize().height / 24), 500, 20);
+		add(invalid);
+		repaint();
+		revalidate();
 	}
 
 	/*
