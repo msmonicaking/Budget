@@ -35,6 +35,7 @@ public class Register extends State {
 	// Security answer
 	private JTextField security_a;
 	private JLabel invalid;
+	private boolean invalidShown = false;
 
 	public Register(LoginPage page) {
 		this.page = page;
@@ -59,7 +60,7 @@ public class Register extends State {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				page.switchTo(LoginPage.Screens.LOGIN);
+				page.switchTo(Screens.LOGIN);
 			}
 			
 		});
@@ -81,12 +82,15 @@ public class Register extends State {
 					
 					try {
 						if(fileio.checkUsername(username.getText())) {
-							// display wrong
-							System.out.println("Username already exists.");
-							initInvalid();
+							if(!invalidShown) {
+								// display wrong
+								System.out.println("Username already exists.");
+								initInvalid();
+								invalidShown = true;
+							}
 						}else {
 							fileio.newUserLogin(username.getText(), password.getText(), security_q.getText(), security_a.getText());
-							page.switchTo(LoginPage.Screens.LOGIN);
+							page.switchTo(Screens.LOGIN);
 						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
