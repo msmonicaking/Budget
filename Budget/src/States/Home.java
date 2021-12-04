@@ -6,8 +6,11 @@ public class Home extends State {
 	
 	public Home(MainPage page) {
 		this.page = page;
+		init();
 	}
 	
+	public void init() {
+		setBounds(50, 0, 1215, 680);
+	}
 	
-
 }
