@@ -18,13 +18,13 @@ public class MainPage extends State {
 		mainScreen = new Main(this);
 		menu = new Menu(this);
 		// First screen to show.
-		switchPanel(homeScreen, menu);
+		switchTo(Screens.HOME);
 	}
 	
 	public void switchTo(Screens screen) {
 		switch (screen) {
 		case HOME:
-			switchPanel(homeScreen, menu);
+			switchPanel(menu, homeScreen);
 			break;
 		case MAIN:
 			switchPanel(menu, mainScreen);
