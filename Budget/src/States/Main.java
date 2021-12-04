@@ -18,9 +18,10 @@ public class Main extends State {
 	 * 
 	 */
 	private static final long serialVersionUID = 3206847208968227199L;
-
-	public Main() {
-
+	private MainPage page;
+	
+	public Main(MainPage page) {
+		this.page = page;
 		init();
 		//setLayout(new GridLayout(1, 1));
 		setLayout(null);

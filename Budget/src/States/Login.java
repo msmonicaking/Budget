@@ -22,6 +22,7 @@ public class Login extends State {
 	private JTextField username;
 	private JTextField password;
 	private JLabel invalid;
+	private boolean isInvalid = false;
 	
 	/**
 	 * 
@@ -34,6 +35,7 @@ public class Login extends State {
 		init();
 		initButtons();
 		initTextBoxes();
+		initInvalid();
 	}
 	
 	/*
@@ -50,9 +52,6 @@ public class Login extends State {
 		invalid.setForeground(Color.RED);
 		invalid.setFont(font);
 		invalid.setBounds(540, 9 * (getSize().height / 19), 500, 20);
-		add(invalid);
-		repaint();
-		revalidate();
 	}
 	
 	/*
@@ -72,11 +71,15 @@ public class Login extends State {
 				try {
 					if (fileio.checkLoginCredentials(username.getText(), password.getText())) {
 						sm.initMain();
-						switchPanel(sm.mainScreen);
 					} else {
 						// display wrong
 						System.out.println("Invalid");
-						initInvalid();
+						if (!isInvalid) {
+							add(invalid);
+							repaint();
+							revalidate();
+							isInvalid = true;
+						}
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -94,7 +97,7 @@ public class Login extends State {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				page.switchTo(LoginPage.Screens.REGISTER);
+				page.switchTo(Screens.REGISTER);
 			}
 			
 		});

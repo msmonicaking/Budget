@@ -14,7 +14,7 @@ public class StateManager extends JFrame {
 	 */
 	private static final long serialVersionUID = 977693761657240777L;
 	protected JLayeredPane pane;
-	protected State mainScreen;
+	protected State mainPage;
 	protected State loginPage;
 
 	public StateManager() throws HeadlessException {
@@ -27,7 +27,7 @@ public class StateManager extends JFrame {
 	}
 
 	protected void initMain() {
-		mainScreen = new Main();
+		mainPage = new MainPage();
 	}
 	
 	private void settings() {
