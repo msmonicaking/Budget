@@ -61,8 +61,11 @@ public class Register extends State {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				page.switchTo(Screens.LOGIN);
-			}
-			
+				username.setText("Username");
+				password.setText("Password");
+				security_q.setText("Security Question");
+				security_a.setText("Security Answer");
+			}		
 		});
 
 		back.setBounds((getSize().width / 2) - (100 / 2) - 50, 12 * (getSize().height / 19), 100, 30);
@@ -91,6 +94,10 @@ public class Register extends State {
 						}else {
 							fileio.newUserLogin(username.getText(), password.getText(), security_q.getText(), security_a.getText());
 							page.switchTo(Screens.LOGIN);
+							username.setText("Username");
+							password.setText("Password");
+							security_q.setText("Security Question");
+							security_a.setText("Security Answer");
 						}
 					} catch (IOException e1) {
 						e1.printStackTrace();
