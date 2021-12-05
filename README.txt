@@ -1,7 +1,4 @@
-Budget Application
+Welcome to BudGET an open source budgeting software.
+
 
 Created by: Martin, Chris, Monica and Younes
-
-Created for CSS360- Software Engineering
-
-November 2021
