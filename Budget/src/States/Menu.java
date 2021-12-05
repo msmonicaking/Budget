@@ -31,15 +31,19 @@ public class Menu extends State {
 	boolean pressed = false;
 
 	ArrayList<JButton> menuButtons;
+	JButton logoutButton;
 	private MainPage page;
 
 	public Menu(MainPage page) {
 		this.page = page;
-		menuButtons = new ArrayList<>();
 		init();
 		initButtons();
+		initMouseListener();
+	}
+
+	public void initMouseListener() {
 		MouseAdapter ma = new MouseAdapter() {
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				if (MouseEvent.BUTTON1 == e.getButton()) {
@@ -68,10 +72,9 @@ public class Menu extends State {
 					toggleMenu();
 				}
 			}
-			
+
 		};
 		addMouseListener(ma);
-		
 	}
 
 	private void toggleMenu() {
@@ -93,7 +96,11 @@ public class Menu extends State {
 		setLocation(0 - showWidth, getY());
 	}
 
+	/**
+	 * Loads the buttons in the menu
+	 */
 	private void initButtons() {
+		menuButtons = new ArrayList<>();
 		JButton home = new JButton("Home");
 		home.addActionListener(new ActionListener() {
 
@@ -118,6 +125,7 @@ public class Menu extends State {
 		});
 		menuButtons.add(transaction);
 
+		// Add buttons to panel with specific dimensions and spacing.
 		int spacing = 10;
 		int bHeight = 40;
 		int bWidth = 200;
@@ -128,6 +136,30 @@ public class Menu extends State {
 			centerWidth(menuButtons.get(i));
 			add(menuButtons.get(i));
 		}
+		initLogoutButton();
+	}
+
+	public void initLogoutButton() {
+		logoutButton = new JButton("Logout");
+		logoutButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// save changes.
+				// switch to login screen.
+				logout();
+			}
+
+		});
+
+		int bHeight = 40;
+		int bWidth = 200;
+		int xOff = 0;
+		int yOff = 680 - bHeight;
+
+		logoutButton.setSize(bWidth, bHeight);
+		logoutButton.setLocation(xOff, yOff);
+		add(logoutButton);
 	}
 
 	@Override
