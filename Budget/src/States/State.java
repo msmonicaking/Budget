@@ -48,6 +48,10 @@ public class State extends JPanel {
 		sm.pane.revalidate();
 	}
 
+	protected void logout() {
+		sm.loginPage.logout();
+	}
+
 	protected void centerWidth(Component com) {
 
 		int x = (getSize().width / 2) - (com.getSize().width / 2);
