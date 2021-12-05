@@ -29,4 +29,8 @@ public class LoginPage extends State {
 		}
 	}
 
+	public void logout() {
+		sm.mainPage = null;
+		switchTo(Screens.LOGIN);
+	}
 }
