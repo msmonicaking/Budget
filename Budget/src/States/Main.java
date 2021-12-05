@@ -28,6 +28,7 @@ public class Main extends State {
 		this.page = page;
 		init();
 		setBounds(50, 0, 1215, 680);
+		setBackground(charcoal);
 		makeMonthTabs();
 
 	}
@@ -37,14 +38,15 @@ public class Main extends State {
 	 */
 	private void init() {
 
-		universalSettings();
+//		universalSettings();
 		setLayout(null);
 	}
 
 	private void makeMonthTabs() {
-
+		int width = getWidth();
+		int height = 610;
 		JTabbedPane monthTabs = new JTabbedPane();
-//		sm.getContentPane().setLayout(new FlowLayout());
+		
 		int monthAt = 0;
 		for(String aMonth : monthNames) {
 			DataPane temp = new DataPane(monthAt);
@@ -53,11 +55,10 @@ public class Main extends State {
 			scrollable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			scrollable.setViewportView(temp);
 			monthTabs.addTab(aMonth, scrollable);
-			scrollable.setSize(new Dimension(1165, 680));
+			scrollable.setSize(new Dimension(width, height));
 			monthAt++;
 		}
-		monthTabs.setBounds(0, getY(), getWidth(), getHeight());
-
+		monthTabs.setBounds(0, 75, width, height);
 		monthTabs.setBackground(deepSpace);
 		monthTabs.setForeground(steelTeal);
 		
@@ -80,9 +81,8 @@ public class Main extends State {
 			this.monthInt = monthInt;
 
 			init();
-			this.setBounds(0, 0, 3000, 720);
-			this.setPreferredSize(new Dimension(3000, 720));
-			this.setBackground(Color.WHITE);
+			this.setBounds(0, 0, getWidth(), 2000);
+			this.setPreferredSize(new Dimension(getWidth(), 2000));
 			setVisible(true);
 			title();
 
@@ -91,16 +91,19 @@ public class Main extends State {
 		}
 		
 		private void init() {
-			universalSettings();
+			
 			setLayout(null);
+			setForeground(steelTeal);
+			setBackground(steelTeal);
+			
 		}
 
 		private void title() {
 			
 			JLabel header = new JLabel(monthNames[monthInt]);
 			header.setFont(headerFont);
-			header.setLocation(0, 200);
-			centerWidth(header);
+			header.setForeground(Color.BLACK);
+			header.setLocation(100, 200);
 			this.add(header);
 
 		}
