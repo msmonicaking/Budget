@@ -14,8 +14,8 @@ public class StateManager extends JFrame {
 	 */
 	private static final long serialVersionUID = 977693761657240777L;
 	protected JLayeredPane pane;
-	protected State mainPage;
-	protected State loginPage;
+	protected MainPage mainPage;
+	protected LoginPage loginPage;
 
 	public StateManager() throws HeadlessException {
 		super("BudGET");
