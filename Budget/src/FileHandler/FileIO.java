@@ -68,8 +68,7 @@ public class FileIO {
 
 		try {
 			// Create a new user json file.
-			File userFile = new File(username + ".json");
-			userFile.createNewFile();
+			newFile(username);
 			
 			FileWriter file = new FileWriter("LoginCredentials.json");
 			file.write(login.toString(4));

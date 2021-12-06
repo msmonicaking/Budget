@@ -93,7 +93,6 @@ public class Register extends State {
 							}
 						}else {
 							fileio.newUserLogin(username.getText(), password.getText(), security_q.getText(), security_a.getText());
-							fileio.newFile(username.getText());
 							page.switchTo(Screens.LOGIN);
 							username.setText("Username");
 							password.setText("Password");
