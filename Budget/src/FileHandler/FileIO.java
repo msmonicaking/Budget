@@ -16,7 +16,7 @@ import org.json.JSONTokener;
  * Editing and loading transaction from JSON file.
  */
 public class FileIO {
-
+	
 	public FileIO() {
 		// Create LoginCredentials.json if it does not exist.
 		if (!checkFileExists()) {
@@ -179,9 +179,7 @@ public class FileIO {
 
 		JSONObject categoryObject = new JSONObject();
 		JSONObject transactions = ((JSONObject)((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month)).get("Transactions"));
-		if(transactions.get(category) == null){
-			transactions.put(category, categoryObject);
-		}
+		transactions.put(category, categoryObject);
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
 			file.write(user.toString(4));
@@ -219,6 +217,15 @@ public class FileIO {
 			e.printStackTrace();
 		}
 	}
+	
+	public double getTotalExpenses(Date date, String username) throws FileNotFoundException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
+		JSONObject month = ((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month));
+
+		return (double) month.get("Total Expenses");
+	}
 
 	/* Add new Transaction to a category.
 	 */
@@ -227,33 +234,52 @@ public class FileIO {
 		FileReader obj = new FileReader(username + ".json");
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject user = new JSONObject(tokener);
-
-		JSONObject month = ((JSONObject)((JSONObject) user.get("" + transaction.getDate().year)).get("" + transaction.getDate().month));
+		Date date = transaction.getDate();
+		
+		if(!checkYear(date, username)) {
+			addYear(date, username);
+		}
+		JSONObject year = (JSONObject) user.get("" + date.year);
+		
+		if(!checkMonth(date, username)) {
+			addMonth(date, username);
+		}
+		JSONObject month = (JSONObject) year.get("" + transaction.getDate().month);
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
-		JSONObject category = (JSONObject) transactionsObj.get(transaction.category);
 
-		if(category != null) {
-			if(!category.has(transaction.getName())) {
-				JSONArray itemArr = new JSONArray();
-				JSONObject item = new JSONObject();
-				item.put("Price", transaction.getPrice());
-				item.put("DOP", transaction.getDate().day);
-				itemArr.put(item);
-				category.put(transaction.getName(), itemArr);
-			} 
-			else {
-				JSONArray itemArr = (JSONArray) category.get(transaction.getName());
-				JSONObject item = new JSONObject();
-				item.put("Price", transaction.getPrice());
-				item.put("DOP", transaction.getDate().day);
-				itemArr.put(item);
-			}
-			month.put("Total Expenses", (double) month.get("Total Expenses") + transaction.getPrice());
+		if(!transactionsObj.has(transaction.category)) {
+			addCategory(transaction.category, date, username);
+		}
+		JSONObject category = (JSONObject) transactionsObj.get(transaction.category);
+		if(!category.has(transaction.getName())) {
+			JSONArray itemArr = new JSONArray();
+			JSONObject item = new JSONObject();
+			item.put("Price", transaction.getPrice());
+			item.put("DOP", transaction.getDate().day);
+			itemArr.put(item);
+			category.put(transaction.getName(), itemArr);
+		} 
+		else {
+			JSONArray itemArr = (JSONArray) category.get(transaction.getName());
+			JSONObject item = new JSONObject();
+			item.put("Price", transaction.getPrice());
+			item.put("DOP", transaction.getDate().day);
+			itemArr.put(item);
+		}
+		if(!month.has("Total Expenses")) {
+			month.put("Total Expenses", transaction.getPrice());
 		}
 		else {
-			System.out.println("Category not found"); // Prints an error
+			month.put("Total Expenses", (int) month.get("Total Expenses") + transaction.getPrice());
 		}
-
+		
+		if(!month.has("Total Transactions")) {
+			month.put("Total Transactions", 1);
+		}
+		else {
+			month.put("Total Transactions", (int) month.get("Total Transactions") + 1);
+		}
+		
 		try (FileWriter file = new FileWriter(username + ".json")) {
 			file.write(user.toString(4));
 			file.flush();
@@ -298,9 +324,9 @@ public class FileIO {
 	}
 
 	/*
-	* Returns a 2D array of Transaction information for the given year and month
+	* Returns an array of Transactions for the given year and month
 	*/
-	public String[][] getAllTransactions(String username, int yearInt, int monthInt) throws Exception {
+	public Transaction[] getAllTransactions(String username, int yearInt, int monthInt) throws Exception {
 
 		// gets info associated with username
 		FileReader obj = new FileReader(username + ".json");
@@ -309,11 +335,20 @@ public class FileIO {
 
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + yearInt)).get("" + monthInt));
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
-
 		
-		
-		String[][] transactions = new String[10][10];
-
-		return transactions;
+		int counter = 0;
+		Transaction[] arr = new Transaction[(int) month.get("Total Transactions")];
+		for(String category : transactionsObj.keySet()) {
+			JSONObject categoryObj = transactionsObj.getJSONObject(category);
+			for(String item : categoryObj.keySet()) {
+				JSONArray itemArr = categoryObj.getJSONArray(item);
+				for(int i = 0; i < itemArr.length(); i++) {
+					JSONObject itemObj = (JSONObject) itemArr.getJSONObject(i);
+					arr[counter] = new Transaction(category, item, itemObj.getDouble("Price"), new Date(itemObj.getInt("DOP"), monthInt, yearInt));
+					counter++;
+				}
+			}
+		}
+		return arr;
 	}
 }
