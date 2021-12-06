@@ -105,6 +105,7 @@ public class Register extends State {
 					} 
 				} else {
 					if(!invalidShown) {
+						initInvalid("Does not meet Username and Password requirements");
 					}
 					// Show errors.
 					System.err.println("Does not meet requirements");
