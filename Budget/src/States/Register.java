@@ -84,13 +84,6 @@ public class Register extends State {
 					FileIO fileio = new FileIO();
 					
 					try {
-						if(register(username.getText(), password.getText())) {
-							if(!invalidShown) {
-								// display wrong
-								initInvalid("Username and Password does not meet the requirements");
-								invalidShown = true;
-							}
-						}
 						if(fileio.checkUsername(username.getText())) {
 							if(!invalidShown) {
 								// display wrong
@@ -132,17 +125,6 @@ public class Register extends State {
 		repaint();
 		revalidate();
 	}
-	public void initInvalid(String Message) {
-		invalid = new JLabel(Message);
-		Font font = new Font("Arial", 10, 14);
-		invalid.setForeground(Color.RED);
-		invalid.setFont(font);
-		invalid.setBounds(460, 9 * (getSize().height / 24), 500, 20);
-		add(invalid);
-		repaint();
-		revalidate();
-	}
-
 	/*
 	 * Creates username and password text fields
 	 */
