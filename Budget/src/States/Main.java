@@ -19,6 +19,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import FileHandler.Date;
 import FileHandler.Transaction;
 
@@ -32,7 +35,7 @@ public class Main extends State {
 	private static final long serialVersionUID = 3206847208968227199L;
 	private MainPage page;
 	private int year, month;
-
+	JTabbedPane monthTabs;
 	public Main(MainPage page) {
 		this.page = page;
 		LocalDateTime now = LocalDateTime.now();
@@ -43,7 +46,7 @@ public class Main extends State {
 		makeMonthTabs();
 
 	}
-	
+
 	/**
 	 * Draws the year.
 	 */
@@ -73,6 +76,7 @@ public class Main extends State {
 		int width = getWidth();
 		int height = 610;
 		JTabbedPane monthTabs = new JTabbedPane();
+		
 
 		int monthAt = 0;
 		for (String aMonth : monthNames) {
@@ -94,7 +98,20 @@ public class Main extends State {
 
 		monthTabs.setTabPlacement(JTabbedPane.TOP);
 		monthTabs.setSelectedIndex(month);
-
+		
+		// Reset scroll bar when tab is changed.
+		ChangeListener changeListener = new ChangeListener() {
+			public void stateChanged(ChangeEvent changeEvent) {
+				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+				
+				int index = sourceTabbedPane.getSelectedIndex();
+				if (sourceTabbedPane.getComponentAt(index) instanceof JScrollPane) {
+					((JScrollPane) sourceTabbedPane.getComponentAt(index)).getVerticalScrollBar().setValue(0);
+				}
+				
+			}
+		};
+		monthTabs.addChangeListener(changeListener);
 		add(monthTabs);
 
 	}
@@ -115,14 +132,14 @@ public class Main extends State {
 			initAddCategoryField();
 			title();
 			loadCategories();
-			
+
 //			displayAllTransactions();
 
 		}
-		
+
 		private void initAddCategoryField() {
 			JTextField addCategory = createTextBox("   Add Category");
-			
+
 			addCategory.setLocation(15, 100);
 			addCategory.setSize(150, 40);
 			add(addCategory);
@@ -135,7 +152,7 @@ public class Main extends State {
 			c2.setBackground(etonBlue);
 			list.add(c1);
 			list.add(c2);
-			
+
 			int yOff = 0;
 			int spacing = 10;
 			for (CategoryBox c : list) {
@@ -204,7 +221,7 @@ public class Main extends State {
 					}
 				});
 			}
-			
+
 			public void setOffset(int xOff, int yOff) {
 				setLocation(getX() + xOff, getY() + yOff);
 			}
@@ -250,44 +267,44 @@ public class Main extends State {
 					g.drawString("Cost", xOff + getWidth() - 130, yOff);
 				}
 			}
-			
+
 			void drawItems(Graphics2D g) {
 				int xOff = 10;
 				int yOff = 110;
 				int spacing = 5;
-				
+
 				g.setColor(Color.WHITE);
 				Font font = new Font("Arial", 0, 25);
 				g.setFont(font);
 				FontMetrics fm = g.getFontMetrics();
-				
+
 				int fontHeight = fm.getMaxAscent();
 				spacing += fontHeight;
-				
+
 				for (int i = 0; i < 2 && list.size() >= 2; i++) {
 					g.drawString(list.get(i).getDate().day + "", xOff + 10, spacing * i + yOff);
 					g.drawString(list.get(i).getName(), xOff + 90, spacing * i + yOff);
 					g.drawString(list.get(i).getPrice() + "", xOff + getWidth() - 130, spacing * i + yOff);
 				}
 			}
-			
+
 			/**
 			 * Focuses to anything that is clicked.
 			 */
 			public void setFocusSettings() {
 				setFocusable(true);
 				addMouseListener(new MouseAdapter() {
-		            @Override
-		            public void mouseClicked(MouseEvent e) {
-		                super.mouseReleased(e);
-		                CategoryBox.this.grabFocus();
-		            }
-		            
-		            @Override
-		            public void mouseReleased(MouseEvent e) {
-		            	CategoryBox.this.grabFocus();
-		            }
-		        });
+					@Override
+					public void mouseClicked(MouseEvent e) {
+						super.mouseReleased(e);
+						CategoryBox.this.grabFocus();
+					}
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+						CategoryBox.this.grabFocus();
+					}
+				});
 			}
 
 		}
