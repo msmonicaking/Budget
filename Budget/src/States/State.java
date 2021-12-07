@@ -5,6 +5,8 @@ import java.awt.Font;
 //import java.awt.LayoutManager;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 //import java.util.LinkedList;
 import java.awt.Color;
 
@@ -32,7 +34,7 @@ public class State extends JPanel {
 	protected static StateManager sm;
 
 	public State() {
-
+		setFocusSettings();
 	}
 
 	/*
@@ -64,6 +66,25 @@ public class State extends JPanel {
 		setVisible(true);
 		setBackground(charcoal);
 
+	}
+	
+	/**
+	 * Focuses to anything that is clicked.
+	 */
+	public void setFocusSettings() {
+		setFocusable(true);
+		addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseReleased(e);
+                State.this.grabFocus();
+            }
+            
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                State.this.grabFocus();
+            }
+        });
 	}
 
 	/**

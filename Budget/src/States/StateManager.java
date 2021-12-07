@@ -29,14 +29,15 @@ public class StateManager extends JFrame {
 	protected void initMain() {
 		mainPage = new MainPage();
 	}
-	
+
 	private void settings() {
 		setResizable(false);
 		setSize(1280, 720);
 		setVisible(true);
+		setFocusable(true);
+
 	}
-	
-	
+
 // Main runnable program, creates a State Manager
 	public static void main(String[] args) {
 		StateManager sm = new StateManager();
