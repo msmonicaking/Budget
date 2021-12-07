@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -225,6 +226,15 @@ public class FileIO {
 
 		return (double) month.get("Total Expenses");
 	}
+	
+	public int getTotalTransactions(Date date, String username) throws FileNotFoundException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
+		JSONObject month = ((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month));
+
+		return (int) month.get("Total Transactions");
+	}
 
 	/* Add new Transaction to a category.
 	 */
@@ -269,7 +279,11 @@ public class FileIO {
 			month.put("Total Expenses", transaction.getPrice());
 		}
 		else {
-			month.put("Total Expenses", (int) month.get("Total Expenses") + transaction.getPrice());
+			if(month.get("Total Expenses").getClass().equals(int.class)) {
+				month.put("Total Expenses", ((int) month.get("Total Expenses")) + transaction.getPrice());
+			}else {
+				month.put("Total Expenses", ((BigDecimal) month.get("Total Expenses")).doubleValue() + transaction.getPrice());
+			}
 		}
 		
 		if(!month.has("Total Transactions")) {
@@ -307,6 +321,7 @@ public class FileIO {
 					if((long) ((JSONObject)itemArr.get(i)).get("DOP") == (long)transaction.getDate().day){
 						itemArr.remove(i);
 						month.put("Total Expenses", (double) month.get("Total Expenses") - transaction.getPrice());
+						month.put("Total Transactions", (int) month.get("Total Transactions") - 1);
 					}
 				}
 			}
