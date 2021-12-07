@@ -2,17 +2,16 @@ package States;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
-import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 import FileHandler.FileIO;
 
@@ -39,6 +38,7 @@ public class Menu extends State {
 		init();
 		initButtons();
 		initMouseListener();
+		drawUsername();
 	}
 
 	public void initMouseListener() {
@@ -94,6 +94,18 @@ public class Menu extends State {
 		setLayout(null);
 		setSize(hiddenWidth + showWidth, height);
 		setLocation(0 - showWidth, getY());
+	}
+	
+	private void drawUsername() {
+		JLabel name = new JLabel(page.username);
+		Font font = new Font("Arial", 0, 30);
+		
+		name.setFont(font);
+		name.setBounds(10, 80, 190, 50);
+		centerText(name);
+		name.setBackground(Color.WHITE);
+		name.setForeground(Color.WHITE);
+		add(name);
 	}
 
 	/**
@@ -166,6 +178,21 @@ public class Menu extends State {
 	protected void centerWidth(Component com) {
 		int x = (showWidth / 2) - (com.getWidth() / 2);
 		com.setLocation(x, com.getY());
+	}
+	
+	/**
+	 * Centers text in menu.
+	 * @param com
+	 */
+	private void centerText(JLabel com) {
+		int width = (int) com.getPreferredSize().getWidth();
+		if (width >= showWidth) {
+			com.setLocation(0, com.getY());
+			return;
+		}
+		width /= 2;
+		width = (showWidth / 2) - width;
+		com.setLocation(width, com.getY());
 	}
 
 	@Override
