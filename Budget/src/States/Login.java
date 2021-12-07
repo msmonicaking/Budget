@@ -70,7 +70,7 @@ public class Login extends State {
 				FileIO fileio = new FileIO();
 				try {
 					if (fileio.checkLoginCredentials(username.getText(), password.getText())) {
-						sm.initMain();
+						sm.initMain(username.getText());
 					} else {
 						// display wrong
 						System.out.println("Invalid");
