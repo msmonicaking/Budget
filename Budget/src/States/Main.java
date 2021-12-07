@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
 import FileHandler.Date;
 import FileHandler.Transaction;
@@ -111,10 +112,20 @@ public class Main extends State {
 		public DataPane(int monthInt) {
 			this.monthInt = monthInt;
 			init();
+			initAddCategoryField();
 			title();
 			loadCategories();
+			
 //			displayAllTransactions();
 
+		}
+		
+		private void initAddCategoryField() {
+			JTextField addCategory = createTextBox("   Add Category");
+			
+			addCategory.setLocation(15, 100);
+			addCategory.setSize(150, 40);
+			add(addCategory);
 		}
 
 		private void loadCategories() {
@@ -179,6 +190,7 @@ public class Main extends State {
 				this.category = category;
 				loadTemp();
 				init();
+				setFocusSettings();
 			}
 
 			public void init() {
@@ -257,6 +269,25 @@ public class Main extends State {
 					g.drawString(list.get(i).getName(), xOff + 90, spacing * i + yOff);
 					g.drawString(list.get(i).getPrice() + "", xOff + getWidth() - 130, spacing * i + yOff);
 				}
+			}
+			
+			/**
+			 * Focuses to anything that is clicked.
+			 */
+			public void setFocusSettings() {
+				setFocusable(true);
+				addMouseListener(new MouseAdapter() {
+		            @Override
+		            public void mouseClicked(MouseEvent e) {
+		                super.mouseReleased(e);
+		                CategoryBox.this.grabFocus();
+		            }
+		            
+		            @Override
+		            public void mouseReleased(MouseEvent e) {
+		            	CategoryBox.this.grabFocus();
+		            }
+		        });
 			}
 
 		}
