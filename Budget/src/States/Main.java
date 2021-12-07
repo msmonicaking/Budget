@@ -1,32 +1,20 @@
 package States;
 
-import java.awt.LayoutManager;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.awt.GridLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridBagLayout;
-//import javax.swing.LookAndFeel;
-
-import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
-import javax.swing.SwingConstants;
-
 import FileHandler.Date;
 import FileHandler.Transaction;
 
@@ -39,12 +27,30 @@ public class Main extends State {
 	 */
 	private static final long serialVersionUID = 3206847208968227199L;
 	private MainPage page;
+	private int year, month;
 
 	public Main(MainPage page) {
 		this.page = page;
+		LocalDateTime now = LocalDateTime.now();
+		year = now.getYear();
+		month = now.getMonth().getValue() - 1;
 		init();
+		drawYear();
 		makeMonthTabs();
 
+	}
+	
+	/**
+	 * Draws the year.
+	 */
+	private void drawYear() {
+		JLabel yearLabel = new JLabel(year + "");
+		Font font = new Font("Arial", 0, 50);
+		yearLabel.setFont(font);
+		yearLabel.setBackground(Color.white);
+		yearLabel.setForeground(Color.white);
+		yearLabel.setBounds(20, 0, 200, 100);
+		add(yearLabel);
 	}
 
 	/*
@@ -83,6 +89,7 @@ public class Main extends State {
 		monthTabs.setForeground(steelTeal);
 
 		monthTabs.setTabPlacement(JTabbedPane.TOP);
+		monthTabs.setSelectedIndex(month);
 
 		add(monthTabs);
 
@@ -200,7 +207,9 @@ public class Main extends State {
 			}
 
 			void drawHeader(Graphics2D g) {
-
+				if (isVisible()) {
+					g.setColor(Color.WHITE);
+				}
 			}
 
 		}
