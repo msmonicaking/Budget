@@ -184,10 +184,22 @@ public class FileIO {
 		FileReader obj = new FileReader(username + ".json");
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject user = new JSONObject(tokener);
+		if(!user.has("" + date.year)) {
+			user.put(date.year + "", new JSONObject());
+		}
+		JSONObject year = (JSONObject) user.get("" + date.year);
+		if(!year.has("" + date.month)) {
+			JSONObject month = new JSONObject();
+			month.put("Budget", 0);
+			month.put("Total Expenses", (double) 0);
+			month.put("Transactions", new JSONObject());
+			year.put(date.month + "", month);
+		}
+		JSONObject month = (JSONObject) year.get("" + date.month);
+		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
 
 		JSONObject categoryObject = new JSONObject();
-		JSONObject transactions = ((JSONObject)((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month)).get("Transactions"));
-		transactions.put(category, categoryObject);
+		transactionsObj.put(category, categoryObject);
 
 		try (FileWriter file = new FileWriter(username + ".json")) {
 			file.write(user.toString(4));
