@@ -25,6 +25,7 @@ import javax.swing.event.ChangeListener;
 
 import FileHandler.Date;
 import FileHandler.Transaction;
+import States.CategoryOverlay.CategoryWindow;
 
 import javax.swing.JTabbedPane;
 
@@ -266,6 +267,8 @@ public class Main extends State {
 						super.mouseClicked(e);
 						System.out.println("clicked");
 						// Set transaction info to CategoryWindow
+						CategoryWindow.setTransaction(list);
+						CategoryWindow.setTitle(category);
 						page.setVisibleCW(true);
 					}
 				});

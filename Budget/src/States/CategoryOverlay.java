@@ -75,6 +75,7 @@ public class CategoryOverlay extends State {
 		private static State transactionList;
 		private static JTextField dayTF, nameTF, costTF; 
 		private static JButton addNewTransaction;
+		private static JLabel title;
 		static int windowWidth = 700, windowHeight = 600;
 
 		public CategoryWindow() {
@@ -130,7 +131,7 @@ public class CategoryOverlay extends State {
 		 * Prints the category name on the window.
 		 */
 		private void initTitle() {
-			JLabel title = new JLabel(category);
+			title = new JLabel(category);
 			title.setForeground(Color.WHITE);
 			Font font = new Font("Arial", 0, 50);
 			title.setFont(font);
@@ -138,12 +139,20 @@ public class CategoryOverlay extends State {
 			title.setSize(450, 40);
 			add(title);
 		}
+		
+		/**
+		 * Set title
+		 */
+		
+		public static void setTitle(String s) {
+			title.setText(s);
+		}
 
 		/**
 		 * Takes in an array of Transactions to add to panel.
 		 * @param t 
 		 */
-		private void addTransaction(Transaction[] t) {
+		public static void addTransaction(ArrayList<Transaction> t) {
 			for (Transaction a : t) {
 				addTransaction(a);
 			}
@@ -153,11 +162,24 @@ public class CategoryOverlay extends State {
 		 * Adds to list of transactions.
 		 * @param t
 		 */
-		private void addTransaction(Transaction t) {
+		public static void addTransaction(Transaction t) {
 			TransactionRow newRow = new TransactionRow(t);
 			list.add(newRow);
-			Dimension temp = getSize();
-			transactionList.setSize((int) temp.getWidth(), (int) (temp.getHeight() + newRow.getHeight()));
+			
+			refresh();
+		}
+		
+		/**
+		 * Set list of transactions.
+		 * @param t
+		 */
+		public static void setTransaction(ArrayList<Transaction> t) {
+			list = new ArrayList<>();
+			for (Transaction a : t) {
+				TransactionRow newRow = new TransactionRow(a);
+				list.add(newRow);
+			}
+			
 			refresh();
 		}
 		
@@ -165,11 +187,13 @@ public class CategoryOverlay extends State {
 		 * Prints variable "list" to screen. Should be called after adding new
 		 * transaction.
 		 */
-		private void refresh() {
+		private static void refresh() {
 			int xOff = 0;
 			int yOff = 10;
 			int spacing = 28;
 			transactionList.removeAll();
+			transactionList.setPreferredSize(new Dimension(600, 20));
+			transactionList.setSize(new Dimension(600, 20));
 			for (TransactionRow r : list) {
 				r.setLocation(xOff, yOff);
 				r.setForeground(charcoal);
@@ -283,7 +307,7 @@ public class CategoryOverlay extends State {
 		 * Draws the information and remove button.
 		 *
 		 */
-		class TransactionRow extends JComponent {
+		static class TransactionRow extends JComponent {
 			String name;
 			double cost;
 			Date date;
