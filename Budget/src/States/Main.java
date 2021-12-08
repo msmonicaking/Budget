@@ -13,6 +13,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -35,6 +36,7 @@ public class Main extends State {
 	private static final long serialVersionUID = 3206847208968227199L;
 	private MainPage page;
 	private int year, month;
+	protected JLabel monthS;
 	JTabbedPane monthTabs;
 	
 	public Main(MainPage page) {
@@ -45,6 +47,7 @@ public class Main extends State {
 		month = now.getMonth().getValue() - 1;
 		init();
 		drawYear();
+		drawMonthS();
 		makeMonthTabs();
 	}
 
@@ -59,6 +62,23 @@ public class Main extends State {
 		yearLabel.setForeground(Color.white);
 		yearLabel.setBounds(20, 0, 200, 100);
 		add(yearLabel);
+	}
+	
+	private void updateDate() {
+		monthS.setText(monthNames[month]);
+	}
+	
+	/**
+	 * Draws the month.
+	 */
+	private void drawMonthS() {
+		monthS = new JLabel(monthNames[month]);
+		Font font = new Font("Arial", 0, 50);
+		monthS.setFont(font);
+		monthS.setBackground(Color.white);
+		monthS.setForeground(Color.white);
+		monthS.setBounds(150, 0, 400, 100);
+		add(monthS);
 	}
 
 	/*
@@ -108,6 +128,8 @@ public class Main extends State {
 				int index = sourceTabbedPane.getSelectedIndex();
 				if (sourceTabbedPane.getComponentAt(index) instanceof JScrollPane) {
 					((JScrollPane) sourceTabbedPane.getComponentAt(index)).getVerticalScrollBar().setValue(0);
+					month = index;
+					updateDate();
 				}
 				
 			}
@@ -125,25 +147,59 @@ public class Main extends State {
 		 */
 		private static final long serialVersionUID = -6883981624969242952L;
 		private ArrayList<CategoryBox> list = new ArrayList<>();
+		JTextField addCategoryField;
+		JButton addCategoryButton;
 		int monthInt;
 
 		public DataPane(int monthInt) {
 			this.monthInt = monthInt;
 			init();
 			initAddCategoryField();
-			title();
+//			title();
 			loadCategories();
 
 //			displayAllTransactions();
 
 		}
 
+		/**
+		 * Enter new category name and add button.
+		 * 
+		 * To-Do
+		 * Add a new CategoryBox to "list" and refresh when adding a new category.
+		 */
 		private void initAddCategoryField() {
-			JTextField addCategory = createTextBox("   Add Category");
-
-			addCategory.setLocation(15, 100);
-			addCategory.setSize(150, 40);
-			add(addCategory);
+			addCategoryField = createTextBox("   Add Category");
+			
+			addCategoryField.setLocation(15, 5);
+			addCategoryField.setSize(150, 40);
+			add(addCategoryField);
+			
+			addCategoryButton = new JButton("+");
+			addCategoryButton.setSize(40, 40);
+			addCategoryButton.setLocation(175, 5);
+			add(addCategoryButton);
+			
+		}
+		
+		/**
+		 * Use to refresh category boxes when updating it.
+		 */
+		private void refresh() {
+			int xOff = 10;
+			int yOff = 50;
+			int spacing = 10;
+			removeAll();
+			initAddCategoryField();
+			for (CategoryBox r : list) {
+				r.setLocation(xOff, yOff);
+				r.setForeground(charcoal);
+				yOff += spacing + r.getHeight();
+				add(r);
+			}
+			Dimension temp = getSize();
+			setSize((int) temp.getWidth(), (int) (temp.getHeight() + yOff));
+			setPreferredSize(new Dimension((int) temp.getWidth(), (int) (yOff)));
 		}
 
 		private void loadCategories() {
@@ -151,16 +207,16 @@ public class Main extends State {
 			c1.setBackground(etonBlue);
 			CategoryBox c2 = new CategoryBox("Entertainment");
 			c2.setBackground(etonBlue);
+			CategoryBox c3 = new CategoryBox("Entertainment");
+			c3.setBackground(etonBlue);
+			CategoryBox c4 = new CategoryBox("Entertainment");
+			c4.setBackground(etonBlue);
 			list.add(c1);
 			list.add(c2);
+			list.add(c3);
+			list.add(c4);
 
-			int yOff = 0;
-			int spacing = 10;
-			for (CategoryBox c : list) {
-				c.setOffset(0, yOff);
-				add(c);
-				yOff = c.getHeight() + spacing;
-			}
+			refresh();
 		}
 
 		private void init() {
@@ -170,16 +226,6 @@ public class Main extends State {
 			setLayout(null);
 //			setForeground(steelTeal);
 			setBackground(steelTeal);
-		}
-
-		private void title() {
-			JLabel header = new JLabel(monthNames[monthInt]);
-			header.setFont(headerFont);
-			header.setBackground(Color.WHITE);
-			header.setLocation(0, 0);
-			header.setBounds(10, 10, 680, 100);
-			add(header);
-
 		}
 
 		private void displayAllTransactions() {
@@ -212,7 +258,7 @@ public class Main extends State {
 			}
 
 			public void init() {
-				setLocation(10, 150);
+				setLocation(10, 50);
 				setSize(800, 200);
 				addMouseListener(new MouseAdapter() {
 					@Override
