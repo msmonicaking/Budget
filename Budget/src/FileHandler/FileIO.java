@@ -55,6 +55,14 @@ public class FileIO {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isEmpty(String username) throws FileNotFoundException {
+		FileReader obj = new FileReader(username + ".json");
+        JSONTokener tokener = new JSONTokener(obj);
+		JSONObject user = new JSONObject(tokener);
+		
+		return user.isEmpty();
+	}
 
 	public void newUserLogin(String username, String password, String securityQ, String securityA) throws IOException {
 		FileReader obj = new FileReader("LoginCredentials.json");
@@ -244,20 +252,22 @@ public class FileIO {
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject user = new JSONObject(tokener);
 		Date date = transaction.getDate();
-		
-		if(!checkYear(date, username)) {
-			addYear(date, username);
+		if(!user.has("" + date.year)) {
+			user.put(date.year + "", new JSONObject());
 		}
 		JSONObject year = (JSONObject) user.get("" + date.year);
-		
-		if(!checkMonth(date, username)) {
-			addMonth(date, username);
+		if(!year.has("" + date.month)) {
+			JSONObject month = new JSONObject();
+			month.put("Budget", 0);
+			month.put("Total Expenses", (double) 0);
+			month.put("Transactions", new JSONObject());
+			year.put(date.month + "", month);
 		}
 		JSONObject month = (JSONObject) year.get("" + transaction.getDate().month);
 		JSONObject transactionsObj = (JSONObject) month.get("Transactions");
-
+		
 		if(!transactionsObj.has(transaction.category)) {
-			addCategory(transaction.category, date, username);
+			transactionsObj.put(transaction.getCategory(), new JSONObject());
 		}
 		JSONObject category = (JSONObject) transactionsObj.get(transaction.category);
 		if(!category.has(transaction.getName())) {
@@ -279,11 +289,7 @@ public class FileIO {
 			month.put("Total Expenses", transaction.getPrice());
 		}
 		else {
-			if(month.get("Total Expenses").getClass().equals(int.class)) {
-				month.put("Total Expenses", ((int) month.get("Total Expenses")) + transaction.getPrice());
-			}else {
-				month.put("Total Expenses", ((BigDecimal) month.get("Total Expenses")).doubleValue() + transaction.getPrice());
-			}
+			month.put("Total Expenses", month.getBigDecimal("Total Expenses").doubleValue() + transaction.getPrice());
 		}
 		
 		if(!month.has("Total Transactions")) {
