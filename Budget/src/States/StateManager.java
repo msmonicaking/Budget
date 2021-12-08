@@ -26,7 +26,7 @@ public class StateManager extends JFrame {
 		loginPage = new LoginPage();
 	}
 
-	protected void initMain(String username) {
+	protected void initMain(String username) throws Exception {
 		mainPage = new MainPage(username);
 	}
 

@@ -84,6 +84,9 @@ public class Login extends State {
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
 				}
 			}
 			

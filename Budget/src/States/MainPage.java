@@ -15,7 +15,7 @@ public class MainPage extends State {
 	private static Main mainScreen;
 	protected static CategoryOverlay cw;
 	
-	public MainPage(String username) {
+	public MainPage(String username) throws Exception {
 		this.username = username;
 		cw = new CategoryOverlay(mainScreen);
 		cw.setVisible(false);
