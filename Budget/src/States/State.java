@@ -18,11 +18,11 @@ public class State extends JPanel {
 
 	// Potential Color palette for ButGET
 	// see Java Swing google doc for visual aid
-	protected Color teaGreen = new Color(201, 228, 202); // text color?
-	protected Color etonBlue = new Color(135, 187, 162);
-	protected Color steelTeal = new Color(85, 130, 139);
-	protected Color deepSpace = new Color(59, 96, 100);
-	protected Color charcoal = new Color(54, 73, 88); // background color currently
+	protected static Color teaGreen = new Color(201, 228, 202); // text color?
+	protected static Color etonBlue = new Color(135, 187, 162);
+	protected static Color steelTeal = new Color(85, 130, 139);
+	protected static Color deepSpace = new Color(59, 96, 100);
+	protected static Color charcoal = new Color(54, 73, 88); // background color currently
 
 	Font headerFont = new Font("Arial", Font.PLAIN, 100);
 
@@ -92,7 +92,7 @@ public class State extends JPanel {
 	 * @param name: Placeholder inside text box.
 	 * @return : JTextField.
 	 */
-	protected JTextField createTextBox(String name) {
+	protected static JTextField createTextBox(String name) {
 
 		JTextField temp = new JTextField(name);
 
