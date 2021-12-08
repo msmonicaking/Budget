@@ -147,7 +147,7 @@ public class Register extends State {
 		centerWidth(username);
 		add(username);
 
-		password = createTextBox("Password");
+		password = createPassBox("Password");
 		password.setBounds(0, 9 * (getSize().height / 19), 200, 30);
 		centerWidth(password);
 		add(password);

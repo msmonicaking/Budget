@@ -36,7 +36,9 @@ public class Main extends State {
 	private MainPage page;
 	private int year, month;
 	JTabbedPane monthTabs;
+	
 	public Main(MainPage page) {
+		
 		this.page = page;
 		LocalDateTime now = LocalDateTime.now();
 		year = now.getYear();
@@ -44,7 +46,6 @@ public class Main extends State {
 		init();
 		drawYear();
 		makeMonthTabs();
-
 	}
 
 	/**

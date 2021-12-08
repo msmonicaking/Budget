@@ -36,6 +36,7 @@ public class Login extends State {
 		initButtons();
 		initTextBoxes();
 		initInvalid();
+		initBanner();
 	}
 	
 	/*
@@ -116,7 +117,7 @@ public class Login extends State {
 		centerWidth(username);
 		add(username);
 		
-		password = createTextBox("Password");
+		password = createPassBox("Password");
 		
 		password.setBounds(0, 5 * getSize().height / 9, 200, 30);
 		centerWidth(password);
@@ -124,6 +125,9 @@ public class Login extends State {
 
 	}
 	
-	
+	private void initBanner() {
+		
+		
+	}
 
 }

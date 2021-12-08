@@ -11,11 +11,12 @@ import java.awt.event.MouseEvent;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class State extends JPanel {
 
-	// Potential Color pallette for ButGET
+	// Potential Color palette for ButGET
 	// see Java Swing google doc for visual aid
 	protected Color teaGreen = new Color(201, 228, 202); // text color?
 	protected Color etonBlue = new Color(135, 187, 162);
@@ -116,8 +117,39 @@ public class State extends JPanel {
 			}
 
 		});
-
 		return temp;
+	}
+	
+		/**
+		 * @param name: Placeholder inside text box.
+		 * @return : JPasswordField
+		 */
+		protected JTextField createPassBox(String name) {
+
+			JPasswordField temp = new JPasswordField(name);
+
+			// a Focus Listener changes behavior when user clicks on text box
+			temp.addFocusListener(new FocusListener() {
+
+				// defines behavior when clicked in
+				@Override
+				public void focusGained(FocusEvent e) {
+					if (temp.getPassword().length == 0) {
+						temp.setText("");
+					}
+				}
+
+				// defines behavior when clicked away
+				@Override
+				public void focusLost(FocusEvent e) {
+					if (temp.getPassword().length == 0) {
+						temp.setText(name);
+					}
+				}
+
+			});
+
+			return temp;
 	}
 
 }
