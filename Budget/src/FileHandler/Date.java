@@ -33,6 +33,11 @@ public class Date implements Comparable<Date> {
         this.year = year;
 
     }
+    
+    @Override
+    public String toString() {
+    	return month + "/" + day + "/" + year;
+    }
 
 
     // overrides Comparable interfaces compareTo function
