@@ -24,7 +24,7 @@ public class State extends JPanel {
 	protected Color deepSpace = new Color(59, 96, 100);
 	protected Color charcoal = new Color(54, 73, 88); // background color currently
 
-	Font headerFont = new Font("Arial", Font.ITALIC, 100);
+	Font headerFont = new Font("Arial", Font.PLAIN, 100);
 
 	String[] monthNames = { "January", "Febuary", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
 

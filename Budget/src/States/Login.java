@@ -108,7 +108,7 @@ public class Login extends State {
 	}
 	
 	/*
-	 * Creates username and password text fields
+	 * Creates user name and password text fields
 	 */
 	private void initTextBoxes() {
 		username = createTextBox("Username");
@@ -125,9 +125,16 @@ public class Login extends State {
 
 	}
 	
+	
+	/*
+	 * Adds Banner above Login information
+	 */
 	private void initBanner() {
+		JLabel banner = new JLabel("Bud-get");
+		banner.setFont(headerFont);
+		banner.setBounds((getSize().width / 2) - (680 / 4), getSize().height / 4, 680, 100);
 		
-		
+		add(banner);
 	}
 
 }
