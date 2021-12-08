@@ -134,7 +134,7 @@ public class CategoryOverlay extends State {
 
 		private void addTransaction(Transaction[] t) {
 			for (Transaction a : t) {
-				list.add(new TransactionRow(a));
+				addTransaction(a);
 			}
 		}
 
