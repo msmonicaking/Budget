@@ -219,6 +219,8 @@ public class Main extends State {
 					public void mouseClicked(MouseEvent e) {
 						super.mouseClicked(e);
 						System.out.println("clicked");
+						// Set transaction info to CategoryWindow
+						page.setVisibleCW(true);
 					}
 				});
 			}

@@ -13,9 +13,12 @@ public class MainPage extends State {
 	private static Menu menu;
 	private static Home homeScreen;
 	private static Main mainScreen;
+	protected static CategoryOverlay cw;
 	
 	public MainPage(String username) {
 		this.username = username;
+		cw = new CategoryOverlay(mainScreen);
+		cw.setVisible(false);
 		homeScreen = new Home(this);
 		mainScreen = new Main(this);
 		menu = new Menu(this);
@@ -29,11 +32,16 @@ public class MainPage extends State {
 			switchPanel(menu, homeScreen);
 			break;
 		case MAIN:
-			switchPanel(menu, mainScreen);
+			switchPanel(menu, cw, mainScreen);
 			break;
 		default:
 			break;
 		}
 	}
+	
+	public void setVisibleCW(boolean b) {
+		cw.setVisible(b);
+	}
+	
 
 }
