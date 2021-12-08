@@ -29,9 +29,11 @@ public class MainPage extends State {
 	public void switchTo(Screens screen) {
 		switch (screen) {
 		case HOME:
+			cw.setVisible(false);
 			switchPanel(menu, homeScreen);
 			break;
 		case MAIN:
+			cw.setVisible(false);
 			switchPanel(menu, cw, mainScreen);
 			break;
 		default:
