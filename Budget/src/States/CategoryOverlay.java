@@ -86,6 +86,7 @@ public class CategoryOverlay extends State {
 			initScrollPane();
 			initHeader();
 			initFields();
+			// Test method that adds to the transactionList being displayed.
 			test();
 		}
 		
@@ -103,6 +104,9 @@ public class CategoryOverlay extends State {
 			setSize(windowWidth, windowHeight);
 		}
 		
+		/**
+		 * Creates the panel that shows the transactions.
+		 */
 		private void initScrollPane() {
 			transactionList = new State();
 			transactionList.setSize(600, 20);
@@ -122,6 +126,9 @@ public class CategoryOverlay extends State {
 			add(scrollPane);
 		}
 
+		/**
+		 * Prints the category name on the window.
+		 */
 		private void initTitle() {
 			JLabel title = new JLabel(category);
 			title.setForeground(Color.WHITE);
@@ -132,12 +139,20 @@ public class CategoryOverlay extends State {
 			add(title);
 		}
 
+		/**
+		 * Takes in an array of Transactions to add to panel.
+		 * @param t 
+		 */
 		private void addTransaction(Transaction[] t) {
 			for (Transaction a : t) {
 				addTransaction(a);
 			}
 		}
 
+		/**
+		 * Adds to list of transactions.
+		 * @param t
+		 */
 		private void addTransaction(Transaction t) {
 			TransactionRow newRow = new TransactionRow(t);
 			list.add(newRow);
@@ -146,6 +161,10 @@ public class CategoryOverlay extends State {
 			refresh();
 		}
 		
+		/**
+		 * Prints variable "list" to screen. Should be called after adding new
+		 * transaction.
+		 */
 		private void refresh() {
 			int xOff = 0;
 			int yOff = 10;
@@ -162,6 +181,9 @@ public class CategoryOverlay extends State {
 			transactionList.setPreferredSize(new Dimension((int) temp.getWidth(), (int) (yOff)));
 		}
 
+		/**
+		 * Prints headers on top of list of transactions.
+		 */
 		private void initHeader() {
 			Font font = new Font("Arial", 0, 25);
 			JLabel day = new JLabel("Day");
@@ -184,6 +206,14 @@ public class CategoryOverlay extends State {
 			add(cost);
 		}
 		
+		/**
+		 * Initiates fields where transactions are entered.
+		 * 
+		 * To-Do
+		 * Check if fields are valid.
+		 * If valid create transaction object and add to variable "list"
+		 * Also use FileIO to add to json file correspondent to user.
+		 */
 		private void initFields() {
 			dayTF = createTextBox("Day");
 			nameTF = createTextBox("Name");
@@ -215,6 +245,9 @@ public class CategoryOverlay extends State {
 			add(addNewTransaction);
 		}
 
+		/**
+		 * Closes the window.
+		 */
 		private void initCloseButton() {
 			int width = 40;
 			int height = 40;
