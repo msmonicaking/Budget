@@ -153,13 +153,17 @@ public class Main extends State {
 		private static final long serialVersionUID = -6883981624969242952L;
 		private ArrayList<CategoryBox> list = new ArrayList<>();
 		JTextField addCategoryField;
+		JTextField setBudgetField;
+		JButton setBudgetButton;
 		JButton addCategoryButton;
+		JLabel currentBudget;
 		int monthInt;
 
 		public DataPane(int monthInt) {
 			this.monthInt = monthInt;
 			init();
 			initAddCategoryField();
+			initSetBudgetField();
 //			title();
 			loadCategories();
 
@@ -199,6 +203,41 @@ public class Main extends State {
 			});
 
 		}
+		
+		/**
+		 * Set budget and draw budget.
+		 * 
+		 */
+		private void initSetBudgetField() {
+			setBudgetField = createTextBox("   Set Budget");
+
+			setBudgetField.setLocation(250, 5);
+			setBudgetField.setSize(150, 40);
+			add(setBudgetField);
+
+			setBudgetButton = new JButton("Set");
+			setBudgetButton.setSize(60, 40);
+			setBudgetButton.setLocation(410, 5);
+			add(setBudgetButton);
+
+			Font font = new Font("Arial", 0, 28);
+			currentBudget = new JLabel("Budget: $1000");
+			currentBudget.setForeground(Color.WHITE);
+			currentBudget.setFont(font);
+			currentBudget.setSize(300, 40);
+			currentBudget.setLocation(480, 5);
+			add(currentBudget);
+			setBudgetButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// FileIO set budget.
+
+				}
+
+			});
+
+		}
 
 		/**
 		 * Use to refresh category boxes when updating it.
@@ -209,6 +248,7 @@ public class Main extends State {
 			int spacing = 10;
 			removeAll();
 			initAddCategoryField();
+			initSetBudgetField();
 			for (CategoryBox r : list) {
 				r.setLocation(xOff, yOff);
 				r.setForeground(charcoal);
