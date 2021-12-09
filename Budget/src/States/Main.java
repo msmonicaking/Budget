@@ -233,6 +233,7 @@ public class Main extends State {
 					try {
 						double temp = Double.parseDouble(setBudgetField.getText());
 						currentBudget.setText("Budget: $" + temp + "");
+						setBudgetField.setText("   Set Budget");
 					} catch (Exception a) {
 						System.err.println("Not a valid number. ");
 					}
@@ -262,8 +263,13 @@ public class Main extends State {
 			int yOff = 50;
 			int spacing = 10;
 			removeAll();
-			initAddCategoryField();
-			initSetBudgetField();
+			add(setBudgetField);
+			add(setBudgetButton);
+			add(addCategoryButton);
+			add(currentBudget);
+			add(addCategoryField);
+
+			addCategoryField.setText("   Add Category");
 			for (CategoryBox r : list) {
 				r.setLocation(xOff, yOff);
 				r.setForeground(charcoal);
