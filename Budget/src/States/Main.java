@@ -215,11 +215,6 @@ public class Main extends State {
 			setBudgetField.setSize(150, 40);
 			add(setBudgetField);
 
-			setBudgetButton = new JButton("Set");
-			setBudgetButton.setSize(60, 40);
-			setBudgetButton.setLocation(410, 5);
-			add(setBudgetButton);
-
 			Font font = new Font("Arial", 0, 28);
 			currentBudget = new JLabel("Budget: $1000");
 			currentBudget.setForeground(Color.WHITE);
@@ -227,6 +222,26 @@ public class Main extends State {
 			currentBudget.setSize(300, 40);
 			currentBudget.setLocation(480, 5);
 			add(currentBudget);
+			
+			setBudgetButton = new JButton("Set");
+			setBudgetButton.setSize(60, 40);
+			setBudgetButton.setLocation(410, 5);
+			setBudgetButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					try {
+						double temp = Double.parseDouble(setBudgetField.getText());
+						currentBudget.setText("Budget: $" + temp + "");
+					} catch (Exception a) {
+						System.err.println("Not a valid number. ");
+					}
+				}
+				
+			});
+			add(setBudgetButton);
+
+			
 			setBudgetButton.addActionListener(new ActionListener() {
 
 				@Override
