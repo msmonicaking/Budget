@@ -1,6 +1,9 @@
 package States;
 
 import java.awt.Color;
+import FileHandler.TransactionRow;
+import FileHandler.TransactionRowList;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -69,7 +72,7 @@ public class CategoryOverlay extends State {
 		 * 
 		 */
 		private static final long serialVersionUID = -4830083721981798147L;
-		protected static ArrayList<TransactionRow> list = new ArrayList<>();
+		protected static TransactionRowList list;
 		protected static String category;
 		private static JScrollPane scrollPane;
 		private static State transactionList;
@@ -88,16 +91,17 @@ public class CategoryOverlay extends State {
 			initHeader();
 			initFields();
 			// Test method that adds to the transactionList being displayed.
-			test();
+//			test();
 		}
 		
-		private void test() {
-			Transaction te = new Transaction("Food", "Milk", 10.0, new Date(10, 10, 2021));
-			for (int i = 0; i < 40; i++) {
-				addTransaction(te);
-			}
-			
-		}
+		
+//		private void test() {
+//			Transaction te = new Transaction("Food", "Milk", 10.0, new Date(10, 10, 2021));
+//			for (int i = 0; i < 40; i++) {
+//				addTransaction(te);
+//			}
+//			
+//		}
 
 		private void init() {
 			setBackground(steelTeal);
@@ -140,6 +144,11 @@ public class CategoryOverlay extends State {
 			add(title);
 		}
 		
+		public static void setList(TransactionRowList l) {
+			list = l;
+			refresh();
+		}
+		
 		/**
 		 * Set title
 		 */
@@ -149,52 +158,18 @@ public class CategoryOverlay extends State {
 		}
 
 		/**
-		 * Takes in an array of Transactions to add to panel.
-		 * @param t 
-		 */
-		public static void addTransaction(ArrayList<Transaction> t) {
-			for (Transaction a : t) {
-				addTransaction(a);
-			}
-		}
-
-		/**
-		 * Adds to list of transactions.
-		 * @param t
-		 */
-		public static void addTransaction(Transaction t) {
-			TransactionRow newRow = new TransactionRow(t);
-			list.add(newRow);
-			
-			refresh();
-		}
-		
-		/**
-		 * Set list of transactions.
-		 * @param t
-		 */
-		public static void setTransaction(ArrayList<Transaction> t) {
-			list = new ArrayList<>();
-			for (Transaction a : t) {
-				TransactionRow newRow = new TransactionRow(a);
-				list.add(newRow);
-			}
-			
-			refresh();
-		}
-		
-		/**
 		 * Prints variable "list" to screen. Should be called after adding new
 		 * transaction.
 		 */
-		private static void refresh() {
+		static void refresh() {
 			int xOff = 0;
 			int yOff = 10;
 			int spacing = 28;
 			transactionList.removeAll();
 			transactionList.setPreferredSize(new Dimension(600, 20));
 			transactionList.setSize(new Dimension(600, 20));
-			for (TransactionRow r : list) {
+			
+			for (TransactionRow r : list.getList()) {
 				r.setLocation(xOff, yOff);
 				r.setForeground(charcoal);
 				yOff += spacing;
@@ -303,78 +278,7 @@ public class CategoryOverlay extends State {
 			g.fillRoundRect(0, 0, windowWidth, windowHeight, 10, 10);
 		}
 
-		/**
-		 * Draws the information and remove button.
-		 *
-		 */
-		static class TransactionRow extends JComponent {
-			String name;
-			double cost;
-			Date date;
-
-			public TransactionRow(Transaction t) {
-				name = t.getName();
-				cost = t.getPrice();
-				date = t.getDate();
-				setSize(600, 30);
-				initText();
-				initDeleteButton();
-			}
-			
-			private void initText() {
-				Font font = new Font("Arial", 0, 20);
-				JLabel nameL = new JLabel(name);
-				nameL.setFont(font);
-				nameL.setSize(300, 20);
-				nameL.setLocation(90, 0);
-				add(nameL);
-				
-				JLabel dateL = new JLabel(date.day + "");
-				dateL.setFont(font);
-				dateL.setSize(50, 20);
-				dateL.setLocation(10, 0);
-				add(dateL);
-				
-				JLabel costL = new JLabel(cost + "");
-				costL.setFont(font);
-				costL.setSize(50, 20);
-				costL.setLocation(getWidth() - 140, 0);
-				add(costL);
-			}
-			
-			private void initDeleteButton() {
-				JButton delete = new JButton("-");
-				delete.addActionListener(new ActionListener() {
-
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-				});
-				
-				delete.setSize(20, 20);
-				delete.setLocation(getWidth() - 50, 0);
-				add(delete);
-			}
-
-			@Override
-			public void paint(Graphics g) {
-				super.paint(g);
-				Graphics2D g2 = (Graphics2D) g;
-				drawGrid(g2);
-				
-			}
-			
-			void drawGrid(Graphics2D g) {
-				g.setColor(new Color(180, 180, 180));
-				g.fillRect(10, getHeight() - 8, 50, 1);
-				g.fillRect(85, getHeight() - 8, 350, 1);
-				g.fillRect(460, getHeight() - 8, 63, 1);
-			}
-
-		}
+		
 	}
 
 }
