@@ -110,6 +110,7 @@ public class Main extends State {
 			scrollable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scrollable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 			scrollable.setViewportView(temp);
+			scrollable.getVerticalScrollBar().setUnitIncrement(16);
 			scrollable.setSize(new Dimension(width, height));
 			scrollable.setLayout(new ScrollPaneLayout());
 
