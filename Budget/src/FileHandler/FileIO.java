@@ -133,7 +133,7 @@ public class FileIO {
 		}
 	}
 
-	private boolean checkYear(Date date, String username) throws IOException {
+	public boolean checkYear(Date date, String username) throws IOException {
 		FileReader obj = new FileReader(username + ".json");
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject user = new JSONObject(tokener);
@@ -162,7 +162,7 @@ public class FileIO {
 		}
 	}
 
-	private boolean checkMonth(Date date, String username) throws IOException {
+	public boolean checkMonth(Date date, String username) throws IOException {
 		FileReader obj = new FileReader(username + ".json");
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject user = new JSONObject(tokener);
@@ -211,13 +211,13 @@ public class FileIO {
 
 	/* Get budget
 	 */
-	public String getBudget(Date date, String username) throws IOException {
+	public double getBudget(Date date, String username) throws IOException {
 		FileReader obj = new FileReader(username + ".json");
         JSONTokener tokener = new JSONTokener(obj);
 		JSONObject user = new JSONObject(tokener);
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month));
 
-		return (String) month.get("Budget");
+		return month.getBigDecimal("Budget").doubleValue();
 	}
 
 	/* Set budget
@@ -244,7 +244,7 @@ public class FileIO {
 		JSONObject user = new JSONObject(tokener);
 		JSONObject month = ((JSONObject)((JSONObject) user.get("" + date.year)).get("" + date.month));
 
-		return (double) month.get("Total Expenses");
+		return month.getBigDecimal("Total Expenses").doubleValue();
 	}
 	
 	public int getTotalTransactions(Date date, String username) throws FileNotFoundException {
