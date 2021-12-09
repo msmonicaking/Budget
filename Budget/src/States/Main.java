@@ -31,7 +31,6 @@ import FileHandler.TransactionRow;
 import FileHandler.TransactionRowList;
 import States.CategoryOverlay.CategoryWindow;
 
-
 import javax.swing.JTabbedPane;
 
 public class Main extends State {
@@ -44,9 +43,9 @@ public class Main extends State {
 	private int year, month;
 	protected JLabel monthS;
 	JTabbedPane monthTabs;
-	
+
 	public Main(MainPage page) {
-		
+
 		this.page = page;
 		LocalDateTime now = LocalDateTime.now();
 		year = now.getYear();
@@ -69,11 +68,11 @@ public class Main extends State {
 		yearLabel.setBounds(20, 0, 200, 100);
 		add(yearLabel);
 	}
-	
+
 	private void updateDate() {
 		monthS.setText(monthNames[month]);
 	}
-	
+
 	/**
 	 * Draws the month.
 	 */
@@ -103,7 +102,6 @@ public class Main extends State {
 		int width = getWidth();
 		int height = 610;
 		JTabbedPane monthTabs = new JTabbedPane();
-		
 
 		int monthAt = 0;
 		for (String aMonth : monthNames) {
@@ -125,19 +123,19 @@ public class Main extends State {
 
 		monthTabs.setTabPlacement(JTabbedPane.TOP);
 		monthTabs.setSelectedIndex(month);
-		
+
 		// Reset scroll bar when tab is changed.
 		ChangeListener changeListener = new ChangeListener() {
 			public void stateChanged(ChangeEvent changeEvent) {
 				JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
-				
+
 				int index = sourceTabbedPane.getSelectedIndex();
 				if (sourceTabbedPane.getComponentAt(index) instanceof JScrollPane) {
 					((JScrollPane) sourceTabbedPane.getComponentAt(index)).getVerticalScrollBar().setValue(0);
 					month = index;
 					updateDate();
 				}
-				
+
 			}
 		};
 		monthTabs.addChangeListener(changeListener);
@@ -171,21 +169,21 @@ public class Main extends State {
 		/**
 		 * Enter new category name and add button.
 		 * 
-		 * To-Do
+		 * To-Do 
 		 * Add a new CategoryBox to "list" and refresh when adding a new category.
 		 */
 		private void initAddCategoryField() {
 			addCategoryField = createTextBox("   Add Category");
-			
+
 			addCategoryField.setLocation(15, 5);
 			addCategoryField.setSize(150, 40);
 			add(addCategoryField);
-			
+
 			addCategoryButton = new JButton("+");
 			addCategoryButton.setSize(40, 40);
 			addCategoryButton.setLocation(175, 5);
 			add(addCategoryButton);
-			
+
 			addCategoryButton.addActionListener(new ActionListener() {
 
 				@Override
@@ -194,13 +192,13 @@ public class Main extends State {
 						list.add(new CategoryBox(addCategoryField.getText()));
 						refresh();
 					}
-					
+
 				}
-				
+
 			});
-			
+
 		}
-		
+
 		/**
 		 * Use to refresh category boxes when updating it.
 		 */
@@ -226,6 +224,7 @@ public class Main extends State {
 			CategoryBox c2 = new CategoryBox("Entertainment");
 			CategoryBox c3 = new CategoryBox("Entertainment");
 			CategoryBox c4 = new CategoryBox("Entertainment");
+
 			list.add(c1);
 			list.add(c2);
 			list.add(c3);
@@ -274,15 +273,15 @@ public class Main extends State {
 
 			public void init() {
 				setLocation(10, 50);
-				setSize(800, 200);
+				setSize(800, 150);
 				setBackground(etonBlue);
 				addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						super.mouseClicked(e);
-						System.out.println("clicked");
+//						System.out.println("clicked");
 						// Set transaction info to CategoryWindow
-						
+
 						for (TransactionRow r : list.getList()) {
 							r.delete.addActionListener(new ActionListener() {
 
@@ -291,9 +290,8 @@ public class Main extends State {
 									list.getList().remove(r);
 									sm.repaint();
 									CategoryWindow.refresh();
-									
 								}
-								
+
 							});
 						}
 						CategoryWindow.setList(list);
@@ -361,13 +359,32 @@ public class Main extends State {
 
 				int fontHeight = fm.getMaxAscent();
 				spacing += fontHeight;
-
-				for (int i = 0; i < 2 && list.getList().size() >= 2; i++) {
+				if (!list.getList().isEmpty()) {
+				for (int i = 0; i < list.getList().size() && i < 2; i++) {
 					g.drawString(list.getList().get(i).getTransaction().getDate().day + "", xOff + 10, spacing * i + yOff);
 					g.drawString(list.getList().get(i).getTransaction().getName(), xOff + 90, spacing * i + yOff);
 					g.drawString(list.getList().get(i).getTransaction().getPrice() + "", xOff + getWidth() - 130, spacing * i + yOff);
+//					System.out.println(getHeight() + spacing);
+					
+				}
 				}
 			}
+
+			/**
+			 * Not needed.
+			 */
+//			public void refresh() {
+//				if (list.getList().size() == 0) {
+//					setSize(new Dimension(getWidth(), 90));
+//					setPreferredSize(new Dimension(getWidth(), 90));
+//				} else if (list.getList().size() == 1) {
+//					setSize(new Dimension(getWidth(), 120));
+//					setPreferredSize(new Dimension(getWidth(), 120));
+//				} else {
+//					setSize(new Dimension(getWidth(), 150));
+//					setPreferredSize(new Dimension(getWidth(), 150));
+//				}
+//			}
 
 			/**
 			 * Focuses to anything that is clicked.
