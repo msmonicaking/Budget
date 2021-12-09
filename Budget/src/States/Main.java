@@ -186,6 +186,19 @@ public class Main extends State {
 			addCategoryButton.setLocation(175, 5);
 			add(addCategoryButton);
 			
+			addCategoryButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (!addCategoryField.getText().equals("   Add Category")) {
+						list.add(new CategoryBox(addCategoryField.getText()));
+						refresh();
+					}
+					
+				}
+				
+			});
+			
 		}
 		
 		/**
@@ -210,13 +223,9 @@ public class Main extends State {
 
 		private void loadCategories() {
 			CategoryBox c1 = new CategoryBox("Food");
-			c1.setBackground(etonBlue);
 			CategoryBox c2 = new CategoryBox("Entertainment");
-			c2.setBackground(etonBlue);
 			CategoryBox c3 = new CategoryBox("Entertainment");
-			c3.setBackground(etonBlue);
 			CategoryBox c4 = new CategoryBox("Entertainment");
-			c4.setBackground(etonBlue);
 			list.add(c1);
 			list.add(c2);
 			list.add(c3);
@@ -266,6 +275,7 @@ public class Main extends State {
 			public void init() {
 				setLocation(10, 50);
 				setSize(800, 200);
+				setBackground(etonBlue);
 				addMouseListener(new MouseAdapter() {
 					@Override
 					public void mouseClicked(MouseEvent e) {
