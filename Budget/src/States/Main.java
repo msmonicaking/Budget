@@ -1,5 +1,7 @@
 package States;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
@@ -25,7 +27,10 @@ import javax.swing.event.ChangeListener;
 
 import FileHandler.Date;
 import FileHandler.Transaction;
+import FileHandler.TransactionRow;
+import FileHandler.TransactionRowList;
 import States.CategoryOverlay.CategoryWindow;
+
 
 import javax.swing.JTabbedPane;
 
@@ -248,7 +253,7 @@ public class Main extends State {
 			 */
 
 			private String category = "";
-			private ArrayList<Transaction> list = new ArrayList<>();
+			private TransactionRowList list = new TransactionRowList();
 			private static final long serialVersionUID = -8324410991043185795L;
 
 			public CategoryBox(String category) {
@@ -267,7 +272,21 @@ public class Main extends State {
 						super.mouseClicked(e);
 						System.out.println("clicked");
 						// Set transaction info to CategoryWindow
-						CategoryWindow.setTransaction(list);
+						
+						for (TransactionRow r : list.getList()) {
+							r.delete.addActionListener(new ActionListener() {
+
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									list.getList().remove(r);
+									sm.repaint();
+									CategoryWindow.refresh();
+									
+								}
+								
+							});
+						}
+						CategoryWindow.setList(list);
 						CategoryWindow.setTitle(category);
 						page.setVisibleCW(true);
 					}
@@ -283,7 +302,7 @@ public class Main extends State {
 					int day = (int) (Math.random() * 10) + 1;
 					double price = (int) (Math.random() * 100);
 					Transaction temp = new Transaction("Food", "test" + i, price, new Date(day, 12, 2021));
-					list.add(temp);
+					list.addTransaction(new TransactionRow(temp));
 				}
 			}
 
@@ -333,10 +352,10 @@ public class Main extends State {
 				int fontHeight = fm.getMaxAscent();
 				spacing += fontHeight;
 
-				for (int i = 0; i < 2 && list.size() >= 2; i++) {
-					g.drawString(list.get(i).getDate().day + "", xOff + 10, spacing * i + yOff);
-					g.drawString(list.get(i).getName(), xOff + 90, spacing * i + yOff);
-					g.drawString(list.get(i).getPrice() + "", xOff + getWidth() - 130, spacing * i + yOff);
+				for (int i = 0; i < 2 && list.getList().size() >= 2; i++) {
+					g.drawString(list.getList().get(i).getTransaction().getDate().day + "", xOff + 10, spacing * i + yOff);
+					g.drawString(list.getList().get(i).getTransaction().getName(), xOff + 90, spacing * i + yOff);
+					g.drawString(list.getList().get(i).getTransaction().getPrice() + "", xOff + getWidth() - 130, spacing * i + yOff);
 				}
 			}
 
