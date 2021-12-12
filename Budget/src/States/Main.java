@@ -19,12 +19,12 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ScrollPaneLayout;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import FileHandler.FileIO;
 import FileHandler.Date;
 import FileHandler.Transaction;
 import FileHandler.TransactionRow;
@@ -43,7 +43,8 @@ public class Main extends State {
 	private int year, month;
 	protected JLabel monthS;
 	JTabbedPane monthTabs;
-
+	FileIO userFile;
+	
 	public Main(MainPage page) {
 
 		this.page = page;
@@ -61,11 +62,13 @@ public class Main extends State {
 	 */
 	private void drawYear() {
 		JLabel yearLabel = new JLabel(year + "");
+		
 		Font font = new Font("Arial", 0, 50);
 		yearLabel.setFont(font);
 		yearLabel.setBackground(Color.white);
 		yearLabel.setForeground(Color.white);
 		yearLabel.setBounds(20, 0, 200, 100);
+		
 		add(yearLabel);
 	}
 
@@ -73,16 +76,21 @@ public class Main extends State {
 		monthS.setText(monthNames[month]);
 	}
 
+	public int getMonth() { return month; }
+	public int getYear() { return year; }
+	
 	/**
 	 * Draws the month.
 	 */
 	private void drawMonthS() {
 		monthS = new JLabel(monthNames[month]);
+		
 		Font font = new Font("Arial", 0, 50);
 		monthS.setFont(font);
 		monthS.setBackground(Color.white);
 		monthS.setForeground(Color.white);
 		monthS.setBounds(150, 0, 400, 100);
+		
 		add(monthS);
 	}
 
@@ -106,6 +114,7 @@ public class Main extends State {
 		int monthAt = 0;
 		for (String aMonth : monthNames) {
 			DataPane temp = new DataPane(monthAt);
+			
 			JScrollPane scrollable = new JScrollPane(temp);
 			scrollable.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 			scrollable.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -282,10 +291,11 @@ public class Main extends State {
 		}
 
 		private void loadCategories() {
-			CategoryBox c1 = new CategoryBox("Food");
-			CategoryBox c2 = new CategoryBox("Entertainment");
-			CategoryBox c3 = new CategoryBox("Entertainment");
-			CategoryBox c4 = new CategoryBox("Entertainment");
+			
+			CategoryBox c1 = new CategoryBox("Groceries");
+			CategoryBox c2 = new CategoryBox("Rent");
+			CategoryBox c3 = new CategoryBox("Transportation");
+			CategoryBox c4 = new CategoryBox("Fees");
 
 			list.add(c1);
 			list.add(c2);
@@ -304,17 +314,6 @@ public class Main extends State {
 			setBackground(steelTeal);
 		}
 
-		private void displayAllTransactions() {
-
-			// get transactions from File
-			// String[][] transactionData =
-
-			// display in a JTable
-			JTable table = new JTable();
-			table.setBounds(0, 0, 1280, 720);
-			add(table);
-
-		}
 
 		class CategoryBox extends JComponent {
 
@@ -338,10 +337,14 @@ public class Main extends State {
 				setSize(800, 150);
 				setBackground(etonBlue);
 				addMouseListener(new MouseAdapter() {
+					
+					/*
+					 * Listens for Category Box to be clicked on, triggers opening to CategoryOverlay
+					 */
 					@Override
 					public void mouseClicked(MouseEvent e) {
 						super.mouseClicked(e);
-//						System.out.println("clicked");
+						//System.out.println("clicked");
 						// Set transaction info to CategoryWindow
 
 						for (TransactionRow r : list.getList()) {
@@ -358,6 +361,7 @@ public class Main extends State {
 						}
 						CategoryWindow.setList(list);
 						CategoryWindow.setTitle(category);
+						
 						page.setVisibleCW(true);
 					}
 				});

@@ -17,11 +17,14 @@ public class MainPage extends State {
 	
 	public MainPage(String username) throws Exception {
 		this.username = username;
-		cw = new CategoryOverlay(mainScreen);
-		cw.setVisible(false);
+		
 		homeScreen = new Home(this);
 		mainScreen = new Main(this);
 		menu = new Menu(this);
+		
+		cw = new CategoryOverlay(mainScreen);
+		cw.setVisible(false);
+		
 		// First screen to show.
 		switchTo(Screens.HOME);
 	}

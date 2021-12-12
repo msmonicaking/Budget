@@ -42,6 +42,7 @@ public class FileIO {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 	}
 
 	// Creates a new JSON file for login credentials

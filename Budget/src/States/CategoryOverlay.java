@@ -33,11 +33,13 @@ public class CategoryOverlay extends State {
 	 * 
 	 */
 	private static final long serialVersionUID = -862981815128451701L;
-	private CategoryWindow cw = new CategoryWindow();
+	private CategoryWindow cw;
+	//protected FileIO file;
 	protected Main page;
 
 	public CategoryOverlay(Main page) {
 		this.page = page;
+		cw = new CategoryWindow(this);
 		init();
 
 		add(cw);
@@ -52,6 +54,7 @@ public class CategoryOverlay extends State {
 	}
 
 	private void centerScreen(CategoryWindow cw) {
+		
 		int x = (getWidth() / 2) - (CategoryWindow.windowWidth / 2);
 		int y = (getHeight() / 2) - (CategoryWindow.windowHeight / 2);
 		System.out.println(getWidth() + " " + getHeight());
@@ -69,20 +72,22 @@ public class CategoryOverlay extends State {
 	static class CategoryWindow extends JComponent {
 
 		/**
-		 * 
+		 * Nested class CategoryWindow - Can be instantiated without CategoryOverlay
 		 */
 		private static final long serialVersionUID = -4830083721981798147L;
 		protected static TransactionRowList list;
 		protected static String category;
 		private static JScrollPane scrollPane;
 		private static State transactionList;
-		private static JTextField dayTF, nameTF, costTF; 
+		private static JTextField dayTF, nameTF, costTF;
 		private static JButton addNewTransaction;
 		private static JLabel title;
 		static int windowWidth = 700, windowHeight = 600;
+		protected static CategoryOverlay outerClass;
 
-		public CategoryWindow() {
+		public CategoryWindow(CategoryOverlay outer) {
 			category = "Entertainment";
+			outerClass = outer;
 			setFocusable(true);
 			init();
 			initTitle();
@@ -137,10 +142,13 @@ public class CategoryOverlay extends State {
 		private void initTitle() {
 			title = new JLabel(category);
 			title.setForeground(Color.WHITE);
+			
 			Font font = new Font("Arial", 0, 50);
 			title.setFont(font);
+			
 			title.setLocation(15, 20);
 			title.setSize(450, 40);
+			
 			add(title);
 		}
 		
@@ -165,6 +173,7 @@ public class CategoryOverlay extends State {
 			int xOff = 0;
 			int yOff = 10;
 			int spacing = 28;
+			
 			transactionList.removeAll();
 			transactionList.setPreferredSize(new Dimension(600, 20));
 			transactionList.setSize(new Dimension(600, 20));
@@ -175,6 +184,7 @@ public class CategoryOverlay extends State {
 				yOff += spacing;
 				transactionList.add(r);
 			}
+			
 			Dimension temp = transactionList.getSize();
 			transactionList.setSize((int) temp.getWidth(), (int) (temp.getHeight() + yOff));
 			transactionList.setPreferredSize(new Dimension((int) temp.getWidth(), (int) (yOff)));
@@ -188,18 +198,23 @@ public class CategoryOverlay extends State {
 			JLabel day = new JLabel("Day");
 			JLabel name = new JLabel("Name");
 			JLabel cost = new JLabel("Cost");
+			
 			day.setFont(font);
 			name.setFont(font);
 			cost.setFont(font);
+			
 			day.setSize(100, 75);
 			name.setSize(300, 75);
 			cost.setSize(150, 75);
+			
 			day.setLocation(50, 50);
 			name.setLocation(130, 50);
 			cost.setLocation(getWidth() - 195, 50);
+			
 			day.setForeground(Color.white);
 			name.setForeground(Color.white);
 			cost.setForeground(Color.white);
+			
 			add(day);
 			add(name);
 			add(cost);
@@ -217,12 +232,15 @@ public class CategoryOverlay extends State {
 			dayTF = createTextBox("Day");
 			nameTF = createTextBox("Name");
 			costTF = createTextBox("Cost");
+			
 			dayTF.setSize(65, 30);
 			nameTF.setSize(360, 30);
 			costTF.setSize(75, 30);
+			
 			dayTF.setLocation(50, 105);
 			nameTF.setLocation(130, 105);
 			costTF.setLocation(getWidth() - 195, 105);
+			
 			add(dayTF);
 			add(nameTF);
 			add(costTF);
@@ -238,13 +256,26 @@ public class CategoryOverlay extends State {
 				public void actionPerformed(ActionEvent e) {
 					// If all fields are correct, create new transaction class then call addTransaction()
 					// Clear fields if correct.
+					
+					// category, name, price, purchase date
+					String nameIn = nameTF.getText();
+					double priceIn = Double.parseDouble(costTF.getText());
+					
+					int dayIn = Integer.parseInt(dayTF.getText());
+					int month = outerClass.page.getMonth();
+					int year = outerClass.page.getYear();
+					Date dateIn = new Date(dayIn, month, year);
+					
+					Transaction a = new Transaction(category, nameIn, priceIn, dateIn);
+					list.addTransaction(new TransactionRow(a));
+					// file.addTransaction(a);
 				}
 				
 			});
 			add(addNewTransaction);
 		}
 
-		/**
+		/*
 		 * Closes the window.
 		 */
 		private void initCloseButton() {
