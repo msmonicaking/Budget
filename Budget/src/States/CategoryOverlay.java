@@ -268,6 +268,7 @@ public class CategoryOverlay extends State {
 					
 					Transaction a = new Transaction(category, nameIn, priceIn, dateIn);
 					list.addTransaction(new TransactionRow(a));
+					refresh();
 					// file.addTransaction(a);
 				}
 				
