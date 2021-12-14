@@ -267,7 +267,18 @@ public class CategoryOverlay extends State {
 					Date dateIn = new Date(dayIn, month, year);
 					
 					Transaction a = new Transaction(category, nameIn, priceIn, dateIn);
-					list.addTransaction(new TransactionRow(a));
+					TransactionRow a2 = new TransactionRow(a);
+					a2.delete.addActionListener(new ActionListener() {
+
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							list.getList().remove(a2);
+							refresh();
+						}
+						
+					});
+					
+					list.addTransaction(a2);
 					refresh();
 					// file.addTransaction(a);
 				}
